@@ -1,3 +1,17 @@
-.header{
+@import url("./__logo/header__logo.css");
 
+.header{
+display: flex;
+max-width: 882px;
+height: 119px;
+border-bottom: 1px solid rgba(33,33,33,0.7);
+margin: 0 auto;
+}
+
+
+@media screen and (max-width: 900px){
+  .header{
+    margin:0 27px;
+    height: 84px; /*or on lower res */
+  }
 }

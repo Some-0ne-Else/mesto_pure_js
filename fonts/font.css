@@ -1,11 +1,12 @@
 @font-face {
-  font-family: "";
-  src: url("./") format("woff2"), url("./") format("woff");
+  font-family: "Inter";
+  src: url("./Inter-Regular.woff2") format("woff2"), url("./Inter-Regular.woff") format("woff");
   font-weight: normal;
 }
-
+/*
 @font-face {
   font-family: "";
   src: url("./") format("woff2"), url("./") format("woff");
   font-weight: bold;
 }
+*/

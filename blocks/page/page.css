@@ -1,7 +1,8 @@
 .page{
   margin: 0;
-  font-family: "", Arial, sans-serif;
+  font-family: "Inter", Arial, sans-serif;
   width: 100%;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
+  background-color: #000000
 }
