@@ -10,3 +10,16 @@
   background-repeat: no-repeat;
   background-position: center;
   }
+
+  @media screen and (max-width: 680px) {
+    .profile__add-button{
+      margin: 36px auto 0;
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    .profile__add-button{
+      margin: 36px 19px 0;
+      width: 100%;
+    }
+  }

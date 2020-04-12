@@ -1,9 +1,23 @@
-.profile__vocation{
-font-family: Inter;
-font-style: normal;
-font-weight: normal;
-font-size: 18px;
-line-height: 22px;
-color: #FFFFFF;
-margin: 0;
+.profile__vocation {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+@media screen and (max-width: 680px) {
+  .profile__vocation {
+    margin: 14px auto 0;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .profile__vocation {
+    font-size: 14px;
+    line-height: 17px;
+  }
 }

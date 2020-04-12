@@ -1,6 +1,12 @@
-.profile__profile-info{
+.profile__profile-info {
   background-color: black;
   display: flex;
   max-width: 336px;
   flex-wrap: wrap;
+}
+
+@media screen and (max-width: 680px) {
+  .profile__profile-info {
+    align-items: center;
+  }
 }

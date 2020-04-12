@@ -1,4 +1,4 @@
-.profile__full-name{
+.profile__full-name {
   font-family: Inter;
   font-style: normal;
   font-weight: 500;
@@ -7,4 +7,19 @@
   color: #FFFFFF;
   margin: 0 17px 0 0;
   max-width: 295px;
+}
+
+@media screen and (max-width: 680px) {
+  .profile__full-name {
+    margin: 14px auto 0;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .profile__full-name {
+    font-size: 27px;
+    line-height: 56px;
+    margin: 14px 5px 0 auto;
+  }
 }
