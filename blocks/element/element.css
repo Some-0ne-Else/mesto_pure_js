@@ -1,0 +1,11 @@
+@import url("./__image/element__image.css");
+@import url("./__title/element__title.css");
+@import url("./__like/element__like.css");
+.element {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  background: #FFFFFF;
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+}

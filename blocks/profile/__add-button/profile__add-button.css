@@ -9,8 +9,13 @@
   background-color: black;
   background-repeat: no-repeat;
   background-position: center;
+  transition: opacity ease 0.5s;
   }
 
+  .profile__add-button:hover {
+    opacity: 0.6;
+    cursor: pointer;
+   }
   @media screen and (max-width: 680px) {
     .profile__add-button{
       margin: 36px auto 0;

@@ -8,8 +8,13 @@
   background-repeat: no-repeat;
   background-position: center;
   margin-top: 19px;
+  transition: opacity ease 0.5s;
 }
 
+.profile__edit-button:hover {
+ opacity: 0.6;
+ cursor: pointer;
+}
 @media screen and (max-width: 400px) {
   .profile__edit-button {
     margin-right: auto;
