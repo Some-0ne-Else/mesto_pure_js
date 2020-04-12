@@ -14,6 +14,15 @@
       <img class="header__logo" src="./images/header__logo.svg" alt="Логотип">
     </header>
     <main class="content">
+      <section class="popup popup_closed">
+        <form class="popup__container">
+            <h2 class="popup__heading">Редактировать профиль</h2>
+            <button class="popup__close-button"></button>
+            <input type="text" class="popup__full-name" name="fullname" id="fullname" placeholder="Имя" required>
+            <input type="text" class="popup__vocation" name="vocation" id="vocation" placeholder="Краткое описание" required>
+            <button type="submit" class="popup__save-button">Сохранить</button>
+        </form>
+      </section>
       <section class="profile">
         <img class="profile__avatar" src="./images/profile__avatar_image.jpg" alt="Фото профиля">
         <div class="profile__profile-info">
@@ -60,6 +69,6 @@
       <p class="footer__copyright">© 2020 Mesto Russia</p>
     </footer>
   </div>
+  <script src="./js/script.js"></script>
 </body>
-
 </html>
