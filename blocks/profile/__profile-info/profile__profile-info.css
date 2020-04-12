@@ -1,0 +1,6 @@
+.profile__profile-info{
+  background-color: black;
+  display: flex;
+  max-width: 336px;
+  flex-wrap: wrap;
+}
