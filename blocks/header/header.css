@@ -13,6 +13,5 @@ transition: ease 0.5s;
 @media screen and (max-width: 900px){
   .header{
     margin:0 27px;
-    height: 84px; /*or on lower res */
   }
 }

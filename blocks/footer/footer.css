@@ -1,3 +1,14 @@
+@import url("./__copyright/footer__copyright.css");
 .footer{
+max-width: 882px;
+display: flex;
+margin:66px auto 0;
+padding-bottom: 60px;
+}
 
+
+@media screen and (max-width: 900px) {
+  .footer{
+  margin: 66px 27px 0;
+  }
 }
