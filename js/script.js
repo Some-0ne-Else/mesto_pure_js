@@ -7,10 +7,6 @@ const profileVocation = document.querySelector(".profile__vocation");
 const popupFullName = document.querySelector("#fullname");
 const popupVocation = document.querySelector("#vocation");
 
-
-console.log(profileFullName.value);
-console.log(profileFullName.textContent);
-
 function editButtonClick() {
   popupFullName.value = profileFullName.textContent;
   popupVocation.value = profileVocation.textContent;
@@ -30,7 +26,6 @@ function formSubmitHandler(evt) {
   popup.classList.add("popup_closed");
   popup.classList.remove("popup_opened");
 }
-
 
 editButton.addEventListener("click", editButtonClick);
 closeButton.addEventListener("click", closeButtonClick);
