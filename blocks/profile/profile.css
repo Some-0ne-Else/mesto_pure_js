@@ -4,24 +4,21 @@
 @import url("./__edit-button/profile__edit-button.css");
 @import url("./__vocation/profile__vocation.css");
 @import url("./__add-button/profile__add-button.css");
-
-.profile{
-display: flex;
-align-items: center;
-max-width: 882px;
-margin: 40px auto 0;
+.profile {
+  display: flex;
+  align-items: center;
+  max-width: 882px;
+  margin: 40px auto 0;
 }
 
-@media screen and (max-width: 900px){
-  .profile{
-    margin:40px 19px 0
+@media screen and (max-width: 900px) {
+  .profile {
+    margin: 40px 19px 0
   }
-
 }
 
-@media screen and (max-width: 680px){
-  .profile{
-   flex-direction: column;
+@media screen and (max-width: 680px) {
+  .profile {
+    flex-direction: column;
   }
-
 }
