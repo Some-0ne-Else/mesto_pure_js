@@ -10,12 +10,10 @@ const popupVocation = document.querySelector("#vocation");
 function editButtonClick() {
   popupFullName.value = profileFullName.textContent;
   popupVocation.value = profileVocation.textContent;
-  popup.classList.remove("popup_closed");
   popup.classList.add("popup_opened");
 }
 
 function closeButtonClick() {
-  popup.classList.add("popup_closed");
   popup.classList.remove("popup_opened");
 }
 
@@ -23,12 +21,9 @@ function formSubmitHandler(evt) {
   evt.preventDefault();
   profileFullName.textContent = popupFullName.value;
   profileVocation.textContent = popupVocation.value;
-  popup.classList.add("popup_closed");
   popup.classList.remove("popup_opened");
 }
 
+formElement.addEventListener("submit", formSubmitHandler);
 editButton.addEventListener("click", editButtonClick);
 closeButton.addEventListener("click", closeButtonClick);
-formElement.addEventListener("submit", formSubmitHandler);
-
-
