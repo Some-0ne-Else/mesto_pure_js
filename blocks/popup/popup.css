@@ -1,7 +1,7 @@
 @import url("./__container/popup__container.css");
 @import url("./__heading/popup__heading.css");
 @import url("./__input/popup__input.css");
-@import url("./__save-button/popup__save-button.css");
+@import url("./__action-button/popup__action-button.css");
 @import url("./__close-button/popup__close-button.css");
 .popup {
   top: 0;
