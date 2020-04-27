@@ -39,17 +39,35 @@ const popupVocation = document.querySelector("#vocation");
 
 //initialElements.forEach(item => console.log(item.title))
 
+
+
+//функция для создания обработчика события лайк
+function makeHandlerLikeButton() {
+  let likeButton = document.querySelector(".element__like");
+  likeButton.addEventListener("click", evt => evt.target.classList.toggle("element__like_active"));
+}
+function makeHandlerDeleteButton() {
+  let deleteButton = document.querySelector(".element__delete-button");
+  deleteButton.addEventListener('click', function () {
+    const elementToDelete = deleteButton.closest('.element');
+    elementToDelete.remove();
+  });
+
+}
+
 // функция рендера одного элемента
-function renderElement(item){
-const elementTemplate = document.querySelector('.element__template').content;
-const elements = document.querySelector('.elements'); //куда вставляем
-let element = elementTemplate.cloneNode(true);
-// наполняем содержимым
-element.querySelector('.element__image').src = item.imageLink;
-element.querySelector('.element__title').textContent = item.title;
-element.querySelector('.element__image').alt = element.querySelector('.element__title').textContent; //alt будет содержать значение заголовка элемента (карточки)
-// отображаем на странице
-elements.append(element);
+function renderElement(item) {
+  const elementTemplate = document.querySelector('.element__template').content;
+  const elements = document.querySelector('.elements'); //цель для вставки
+  let element = elementTemplate.cloneNode(true);
+  // наполняем содержимым
+  element.querySelector('.element__image').src = item.imageLink;
+  element.querySelector('.element__title').textContent = item.title;
+  element.querySelector('.element__image').alt = element.querySelector('.element__title').textContent; //alt будет содержать значение заголовка элемента (карточки)
+  // отображаем на странице
+  elements.prepend(element);
+  makeHandlerLikeButton();
+  makeHandlerDeleteButton();
 }
 
 function renderInitialElements(){
@@ -58,7 +76,18 @@ initialElements.forEach(item => renderElement(item));
 renderInitialElements();
 
 
+function cleanPopupValues(){
+  popupFullName.value = null;
+  popupVocation.value = null;
+}
+
+function removeEventListeners(){
+  formElement.removeEventListener("submit", formEditHandler);
+  formElement.removeEventListener("submit", formAddHandler);
+}
+
 function editButtonClick() {
+ // очищать не нужно т.к. данные попапа затираются данными со страницы
   popupHeading.textContent = "Редактировать профиль";
   popupFullName.placeholder = "Имя полностью";
   popupVocation.placeholder = "Призвание";
@@ -71,9 +100,11 @@ function editButtonClick() {
 
 function closeButtonClick() {
   popup.classList.remove("popup_opened");
+  removeEventListeners();
 }
 
 function addButtonClick() {
+  cleanPopupValues();
   popupHeading.textContent = "Новое место";
   popupFullName.placeholder = "Название";
   popupVocation.placeholder = "Ссылка на картинку";
@@ -87,21 +118,21 @@ function formEditHandler(evt) {
   profileFullName.textContent = popupFullName.value;
   profileVocation.textContent = popupVocation.value;
   popup.classList.remove("popup_opened");
+  removeEventListeners();
 }
 
 function formAddHandler(evt) {
   evt.preventDefault();
-
   initialElements.push({title:popupFullName.value, imageLink:popupVocation.value }) ; // нужно поменять названия переменных
-  console.log(initialElements[initialElements.length-1]);
   renderElement(initialElements[initialElements.length-1]);
-
-  // теперь применим логику из InitElementsRender
   popup.classList.remove("popup_opened");
+  removeEventListeners();
 }
-
-
 
 editButton.addEventListener("click", editButtonClick);
 closeButton.addEventListener("click", closeButtonClick);
 addButton.addEventListener("click", addButtonClick);
+
+
+
+// Сделать фикс для автозаполнения браузера например новый модификатор
