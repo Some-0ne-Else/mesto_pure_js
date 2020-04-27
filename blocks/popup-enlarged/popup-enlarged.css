@@ -1,15 +1,16 @@
+@import url("./__container/popup-enlarged__container.css");
+@import url("./__image/popup-enlarged__image.css");
+@import url("./__close-button/popup-enlarged__close-button.css");
 .popup-enlarged{
-  width: 75wh;
-  height: 75vh;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  background: #FFFFFF;
-  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
-  border-radius: 10px;
-  transition: ease 0.5s;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.9);
+  justify-content: center;
+  align-items: center;
   display: none;
 }
+

@@ -34,12 +34,10 @@ const formElement = document.querySelector(".popup__container");
 const popupHeading = document.querySelector(".popup__heading");
 const profileFullName = document.querySelector(".profile__full-name");
 const profileVocation = document.querySelector(".profile__vocation");
-const popupFullName = document.querySelector("#fullname");
-const popupVocation = document.querySelector("#vocation");
-
-//initialElements.forEach(item => console.log(item.title))
-
-
+const popupFullName = document.querySelector("#fullname"); // нужно поменять названия переменных
+const popupVocation = document.querySelector("#vocation"); // нужно поменять названия переменных
+const popupEnlarged = document.querySelector(".popup-enlarged");
+const popupEnlargedImage = document.querySelector(".popup-enlarged__image");
 
 //функция для создания обработчика события лайк
 function makeHandlerLikeButton() {
@@ -52,6 +50,14 @@ function makeHandlerDeleteButton() {
     const elementToDelete = deleteButton.closest('.element');
     elementToDelete.remove();
   });
+}
+function makeHandlerElementImage() {
+  let elementImage = document.querySelector(".element__image");
+  elementImage.addEventListener("click", evt => {
+    popupEnlargedImage.src = elementImage.src;
+  popupEnlarged.classList.toggle("popup-enlarged_opened");
+  });
+
 
 }
 
@@ -68,6 +74,7 @@ function renderElement(item) {
   elements.prepend(element);
   makeHandlerLikeButton();
   makeHandlerDeleteButton();
+  makeHandlerElementImage()
 }
 
 function renderInitialElements(){
