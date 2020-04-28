@@ -62,7 +62,7 @@ function makeHandlerElementImage() {
   });
 }
 
-// функция рендера одного элемента
+// функция рендеринга одного элемента
 function renderElement(item) {
   const elementTemplate = document.querySelector('.element__template').content;
   const elements = document.querySelector('.elements'); //цель для вставки
@@ -73,27 +73,30 @@ function renderElement(item) {
   element.querySelector('.element__image').alt = element.querySelector('.element__title').textContent; //alt будет содержать значение заголовка элемента (карточки)
   // отображаем на странице
   elements.prepend(element);
+  //создаем обработчики
   makeHandlerLikeButton();
   makeHandlerDeleteButton();
   makeHandlerElementImage();
 }
 
+//Функция вывода изначальных 6 элементов из массива объектов
 function renderInitialElements() {
   initialElements.forEach(item => renderElement(item));
 }
 renderInitialElements();
 
-
+// функция очистки значений popup раз уж мы пошли путем эксплуатации одной html формы -)
 function cleanPopupValues() {
   popupFirstInput.value = null;
   popupSecondInput.value = null;
 }
-
+//функция удаления обрабочиков, путь тернист и видимо ошибочен.
 function removeEventListeners() {
   formElement.removeEventListener("submit", formEditHandler);
   formElement.removeEventListener("submit", formAddHandler);
 }
 
+//функция обработки нажатия на кнопку редактировать
 function editButtonClick() {
   // очищать не нужно т.к. данные попапа затираются данными со страницы
   popupHeading.textContent = "Редактировать профиль";
@@ -106,11 +109,12 @@ function editButtonClick() {
   popup.classList.add("popup_opened");
 }
 
+//функция обработки нажатия на кнопку закрыть
 function closeButtonClick() {
   popup.classList.remove("popup_opened");
   removeEventListeners();
 }
-
+//функция обработки нажатия на кнопку добавить
 function addButtonClick() {
   cleanPopupValues();
   popupHeading.textContent = "Новое место";
@@ -120,7 +124,7 @@ function addButtonClick() {
   formElement.addEventListener("submit", formAddHandler);
   popup.classList.add("popup_opened");
 }
-
+//функция обработчик формы редактирования
 function formEditHandler(evt) {
   evt.preventDefault();
   profileFullName.textContent = popupFirstInput.value;
@@ -128,23 +132,21 @@ function formEditHandler(evt) {
   popup.classList.remove("popup_opened");
   removeEventListeners();
 }
-
+//функция обработчик формы добавления
 function formAddHandler(evt) {
   evt.preventDefault();
-  initialElements.push({ title: popupFirstInput.value, imageLink: popupSecondInput.value }); // нужно поменять названия переменных
+  initialElements.push({ title: popupFirstInput.value, imageLink: popupSecondInput.value });
   renderElement(initialElements[initialElements.length - 1]);
   popup.classList.remove("popup_opened");
   removeEventListeners();
 }
-
+// обработка нажатия на кнопку закрыть для второй формы.
 function popupEnlargedCloseButtonClick() {
   popupEnlarged.classList.remove("popup-enlarged_opened");
 }
 
+//ждуны слушатели
 editButton.addEventListener("click", editButtonClick);
 closeButton.addEventListener("click", closeButtonClick);
 addButton.addEventListener("click", addButtonClick);
 popupEnlargedCloseButton.addEventListener("click", popupEnlargedCloseButtonClick);
-
-
-// Сделать фикс для автозаполнения браузера например новый модификатор
