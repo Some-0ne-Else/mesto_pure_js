@@ -1,27 +1,27 @@
 const initialElements = [
   {
-    title: 'Карачаевск',
-    imageLink: './images/element__image_karachaevsk.jpg'
+    title: 'Сибуя',
+    imageLink: './images/element__image_sibuya.jpg'
   },
   {
-    title: 'Гора Эльбрус',
-    imageLink: './images/element__image_elbrus.jpg'
+    title: 'Прага',
+    imageLink: './images/element__image_praga.jpg'
   },
   {
-    title: 'Домбай',
-    imageLink: './images/element__image_dombai.jpg'
+    title: 'Иордания',
+    imageLink: './images/element__image_iordaniya.jpg'
   },
   {
-    title: 'Колумбия',
-    imageLink: './images/element__image_columbia.jpg'
+    title: 'Швейцария',
+    imageLink: './images/element__image_switzerland.jpg'
   },
   {
-    title: 'Будапешт',
-    imageLink: './images/element__image_budapesht.jpg'
+    title: 'Греция',
+    imageLink: './images/element__image_greece.jpg'
   },
   {
-    title: 'Вьетнам',
-    imageLink: './images/element__image_vietnam.jpg'
+    title: 'Черногория',
+    imageLink: './images/element__image_montenegro.jpg'
   }
 ];
 
@@ -34,12 +34,14 @@ const formElement = document.querySelector(".popup__container");
 const popupHeading = document.querySelector(".popup__heading");
 const profileFullName = document.querySelector(".profile__full-name");
 const profileVocation = document.querySelector(".profile__vocation");
-const popupFullName = document.querySelector("#fullname"); // нужно поменять названия переменных
-const popupVocation = document.querySelector("#vocation"); // нужно поменять названия переменных
+const popupFirstInput = document.querySelector("#first-input");
+const popupSecondInput = document.querySelector("#second-input");
 const popupEnlarged = document.querySelector(".popup-enlarged");
 const popupEnlargedImage = document.querySelector(".popup-enlarged__image");
+const popupEnlargedCloseButton = document.querySelector(".popup-enlarged__close-button");
+const popupEnlargedCaption = document.querySelector(".popup-enlarged__caption");
 
-//функция для создания обработчика события лайк
+//функция для создания обработчика события лайк. Др. функции аналогично.
 function makeHandlerLikeButton() {
   let likeButton = document.querySelector(".element__like");
   likeButton.addEventListener("click", evt => evt.target.classList.toggle("element__like_active"));
@@ -55,10 +57,9 @@ function makeHandlerElementImage() {
   let elementImage = document.querySelector(".element__image");
   elementImage.addEventListener("click", evt => {
     popupEnlargedImage.src = elementImage.src;
-  popupEnlarged.classList.toggle("popup-enlarged_opened");
+    popupEnlargedCaption.textContent = elementImage.alt;
+    popupEnlarged.classList.toggle("popup-enlarged_opened");
   });
-
-
 }
 
 // функция рендера одного элемента
@@ -74,32 +75,32 @@ function renderElement(item) {
   elements.prepend(element);
   makeHandlerLikeButton();
   makeHandlerDeleteButton();
-  makeHandlerElementImage()
+  makeHandlerElementImage();
 }
 
-function renderInitialElements(){
-initialElements.forEach(item => renderElement(item));
+function renderInitialElements() {
+  initialElements.forEach(item => renderElement(item));
 }
 renderInitialElements();
 
 
-function cleanPopupValues(){
-  popupFullName.value = null;
-  popupVocation.value = null;
+function cleanPopupValues() {
+  popupFirstInput.value = null;
+  popupSecondInput.value = null;
 }
 
-function removeEventListeners(){
+function removeEventListeners() {
   formElement.removeEventListener("submit", formEditHandler);
   formElement.removeEventListener("submit", formAddHandler);
 }
 
 function editButtonClick() {
- // очищать не нужно т.к. данные попапа затираются данными со страницы
+  // очищать не нужно т.к. данные попапа затираются данными со страницы
   popupHeading.textContent = "Редактировать профиль";
-  popupFullName.placeholder = "Имя полностью";
-  popupVocation.placeholder = "Призвание";
-  popupFullName.value = profileFullName.textContent;
-  popupVocation.value = profileVocation.textContent;
+  popupFirstInput.placeholder = "Имя полностью";
+  popupSecondInput.placeholder = "Призвание";
+  popupFirstInput.value = profileFullName.textContent;
+  popupSecondInput.value = profileVocation.textContent;
   popupActionButton.textContent = "Сохранить"
   formElement.addEventListener("submit", formEditHandler);
   popup.classList.add("popup_opened");
@@ -113,8 +114,8 @@ function closeButtonClick() {
 function addButtonClick() {
   cleanPopupValues();
   popupHeading.textContent = "Новое место";
-  popupFullName.placeholder = "Название";
-  popupVocation.placeholder = "Ссылка на картинку";
+  popupFirstInput.placeholder = "Название";
+  popupSecondInput.placeholder = "Ссылка на картинку";
   popupActionButton.textContent = "Создать";
   formElement.addEventListener("submit", formAddHandler);
   popup.classList.add("popup_opened");
@@ -122,24 +123,28 @@ function addButtonClick() {
 
 function formEditHandler(evt) {
   evt.preventDefault();
-  profileFullName.textContent = popupFullName.value;
-  profileVocation.textContent = popupVocation.value;
+  profileFullName.textContent = popupFirstInput.value;
+  profileVocation.textContent = popupSecondInput.value;
   popup.classList.remove("popup_opened");
   removeEventListeners();
 }
 
 function formAddHandler(evt) {
   evt.preventDefault();
-  initialElements.push({title:popupFullName.value, imageLink:popupVocation.value }) ; // нужно поменять названия переменных
-  renderElement(initialElements[initialElements.length-1]);
+  initialElements.push({ title: popupFirstInput.value, imageLink: popupSecondInput.value }); // нужно поменять названия переменных
+  renderElement(initialElements[initialElements.length - 1]);
   popup.classList.remove("popup_opened");
   removeEventListeners();
+}
+
+function popupEnlargedCloseButtonClick() {
+  popupEnlarged.classList.remove("popup-enlarged_opened");
 }
 
 editButton.addEventListener("click", editButtonClick);
 closeButton.addEventListener("click", closeButtonClick);
 addButton.addEventListener("click", addButtonClick);
-
+popupEnlargedCloseButton.addEventListener("click", popupEnlargedCloseButtonClick);
 
 
 // Сделать фикс для автозаполнения браузера например новый модификатор
