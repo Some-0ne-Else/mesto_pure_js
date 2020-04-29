@@ -27,6 +27,7 @@ const initialElements = [
 
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
+const elements = document.querySelector('.elements'); //цель для вставки
 const closeButton = document.querySelector(".popup__close-button");
 const popupActionButton = document.querySelector(".popup__action-button");
 const popup = document.querySelector(".popup");
@@ -42,48 +43,68 @@ const popupEnlargedCloseButton = document.querySelector(".popup-enlarged__close-
 const popupEnlargedCaption = document.querySelector(".popup-enlarged__caption");
 
 //функция для создания обработчика события лайк. Др. функции аналогично.
-function makeHandlerLikeButton() {
-  let likeButton = document.querySelector(".element__like");
-  likeButton.addEventListener("click", evt => evt.target.classList.toggle("element__like_active"));
-}
-function makeHandlerDeleteButton() {
-  let deleteButton = document.querySelector(".element__delete-button");
-  deleteButton.addEventListener('click', function () {
-    const elementToDelete = deleteButton.closest('.element');
-    elementToDelete.remove();
-  });
-}
-function makeHandlerElementImage() {
+
+function likeButtonHandler(evt) {
+  evt.target.classList.toggle("element__like_active");
+};
+
+function deleteElementButtonHandler(evt) {
+  const elementToDelete = evt.target.closest('.element');
+  elementToDelete.remove();
+};
+
+function elementImageHandler(evt) {
+
+  popupEnlargedImage.src = evt.target.src;
+  popupEnlargedCaption.textContent = evt.target.alt;
+  popupEnlarged.classList.toggle("popup-enlarged_opened");
+};
+
+function makeListenerElementImage(evt) {
   let elementImage = document.querySelector(".element__image");
-  elementImage.addEventListener("click", evt => {
-    popupEnlargedImage.src = elementImage.src;
-    popupEnlargedCaption.textContent = elementImage.alt;
-    popupEnlarged.classList.toggle("popup-enlarged_opened");
-  });
-}
+  elementImage.addEventListener("click", elementImageHandler);
+};
+
+
+function makeListenerLikeButton(evt) {
+  let likeButton = document.querySelector(".element__like");
+  likeButton.addEventListener("click", likeButtonHandler);
+};
+
+function makeListenerDeleteButton(evt) {
+  let deleteButton = document.querySelector(".element__delete-button");
+  deleteButton.addEventListener('click', deleteElementButtonHandler);
+};
 
 // функция рендеринга одного элемента
 function renderElement(item) {
   const elementTemplate = document.querySelector('.element__template').content;
-  const elements = document.querySelector('.elements'); //цель для вставки
   let element = elementTemplate.cloneNode(true);
   // наполняем содержимым
   element.querySelector('.element__image').src = item.imageLink;
   element.querySelector('.element__title').textContent = item.title;
   element.querySelector('.element__image').alt = element.querySelector('.element__title').textContent; //alt будет содержать значение заголовка элемента (карточки)
-  // отображаем на странице
-  elements.prepend(element);
-  //создаем обработчики
-  makeHandlerLikeButton();
-  makeHandlerDeleteButton();
-  makeHandlerElementImage();
+  return element;
 }
 
-//Функция вывода изначальных 6 элементов из массива объектов
-function renderInitialElements() {
-  initialElements.forEach(item => renderElement(item));
+function appendElement(element, targetElement) {
+  // отображаем на странице
+  //const elements = document.querySelector('.elements'); //цель для вставки
+  targetElement.prepend(renderElement(element));
+  //создаем ждунов слушателей
+  makeListenerLikeButton();
+  makeListenerDeleteButton();
+  makeListenerElementImage();
 }
-renderInitialElements();
+
+//функция добавления изначальных элементов на страницу принимает пар1 элемент пар2 куда вставляем
+function appendInitialElements() {
+  initialElements.forEach(element => appendElement(element, elements));
+}
+
+// Вызов функции
+appendInitialElements();
+
 
 // функция очистки значений popup раз уж мы пошли путем эксплуатации одной html формы -)
 function cleanPopupValues() {
@@ -97,7 +118,7 @@ function removeEventListeners() {
 }
 
 //функция обработки нажатия на кнопку редактировать
-function editButtonClick() {
+function editButtonHandler() {
   // очищать не нужно т.к. данные попапа затираются данными со страницы
   popupHeading.textContent = "Редактировать профиль";
   popupFirstInput.placeholder = "Имя полностью";
@@ -110,12 +131,12 @@ function editButtonClick() {
 }
 
 //функция обработки нажатия на кнопку закрыть
-function closeButtonClick() {
+function closeButtonHandler() {
   popup.classList.remove("popup_opened");
   removeEventListeners();
 }
 //функция обработки нажатия на кнопку добавить
-function addButtonClick() {
+function addButtonHandler() {
   cleanPopupValues();
   popupHeading.textContent = "Новое место";
   popupFirstInput.placeholder = "Название";
@@ -136,17 +157,17 @@ function formEditHandler(evt) {
 function formAddHandler(evt) {
   evt.preventDefault();
   initialElements.push({ title: popupFirstInput.value, imageLink: popupSecondInput.value });
-  renderElement(initialElements[initialElements.length - 1]);
+  appendElement(initialElements[initialElements.length - 1], elements);
   popup.classList.remove("popup_opened");
   removeEventListeners();
 }
 // обработка нажатия на кнопку закрыть для второй формы.
-function popupEnlargedCloseButtonClick() {
+function popupEnlargedCloseButtonHandler() {
   popupEnlarged.classList.remove("popup-enlarged_opened");
 }
 
 //ждуны слушатели
-editButton.addEventListener("click", editButtonClick);
-closeButton.addEventListener("click", closeButtonClick);
-addButton.addEventListener("click", addButtonClick);
-popupEnlargedCloseButton.addEventListener("click", popupEnlargedCloseButtonClick);
+editButton.addEventListener("click", editButtonHandler);
+closeButton.addEventListener("click", closeButtonHandler);
+addButton.addEventListener("click", addButtonHandler);
+popupEnlargedCloseButton.addEventListener("click", popupEnlargedCloseButtonHandler);
