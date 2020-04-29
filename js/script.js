@@ -42,7 +42,7 @@ const popupEnlargedImage = document.querySelector(".popup-enlarged__image");
 const popupEnlargedCloseButton = document.querySelector(".popup-enlarged__close-button");
 const popupEnlargedCaption = document.querySelector(".popup-enlarged__caption");
 
-//функция для создания обработчика события лайк. Др. функции аналогично.
+//функции обработчиков событий лайк. Др. функции аналогично.
 
 function likeButtonHandler(evt) {
   evt.target.classList.toggle("element__like_active");
@@ -51,27 +51,28 @@ function likeButtonHandler(evt) {
 function deleteElementButtonHandler(evt) {
   const elementToDelete = evt.target.closest('.element');
   elementToDelete.remove();
+  evt.target.removeEventListener("click", elementImageHandler);
+  evt.target.removeEventListener("click", likeButtonHandler);
+  evt.target.removeEventListener('click', deleteElementButtonHandler);
 };
 
 function elementImageHandler(evt) {
-
   popupEnlargedImage.src = evt.target.src;
   popupEnlargedCaption.textContent = evt.target.alt;
   popupEnlarged.classList.toggle("popup-enlarged_opened");
 };
 
-function makeListenerElementImage(evt) {
+function makeListenerElementImage() {
   let elementImage = document.querySelector(".element__image");
   elementImage.addEventListener("click", elementImageHandler);
 };
-
 
 function makeListenerLikeButton(evt) {
   let likeButton = document.querySelector(".element__like");
   likeButton.addEventListener("click", likeButtonHandler);
 };
 
-function makeListenerDeleteButton(evt) {
+function makeListenerDeleteButton() {
   let deleteButton = document.querySelector(".element__delete-button");
   deleteButton.addEventListener('click', deleteElementButtonHandler);
 };
@@ -92,7 +93,7 @@ function appendElement(element, targetElement) {
   //const elements = document.querySelector('.elements'); //цель для вставки
   targetElement.prepend(renderElement(element));
   //создаем ждунов слушателей
-  makeListenerLikeButton();
+  makeListenerLikeButton(document.querySelector(".element__like"));
   makeListenerDeleteButton();
   makeListenerElementImage();
 }
@@ -105,14 +106,13 @@ function appendInitialElements() {
 // Вызов функции
 appendInitialElements();
 
-
 // функция очистки значений popup раз уж мы пошли путем эксплуатации одной html формы -)
 function cleanPopupValues() {
   popupFirstInput.value = null;
   popupSecondInput.value = null;
 }
 //функция удаления обрабочиков, путь тернист и видимо ошибочен.
-function removeEventListeners() {
+function removeFormEventListeners() {
   formElement.removeEventListener("submit", formEditHandler);
   formElement.removeEventListener("submit", formAddHandler);
 }
@@ -151,7 +151,7 @@ function formEditHandler(evt) {
   profileFullName.textContent = popupFirstInput.value;
   profileVocation.textContent = popupSecondInput.value;
   popup.classList.remove("popup_opened");
-  removeEventListeners();
+  removeFormEventListeners();
 }
 //функция обработчик формы добавления
 function formAddHandler(evt) {
