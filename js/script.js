@@ -103,7 +103,7 @@ function appendInitialElements() {
   initialElements.forEach(element => appendElement(element, elements));
 }
 
-// Вызов функции
+// Вызов функции добавления изначальных элементов
 appendInitialElements();
 
 // функция очистки значений popup раз уж мы пошли путем эксплуатации одной html формы -)
@@ -133,7 +133,7 @@ function editButtonHandler() {
 //функция обработки нажатия на кнопку закрыть
 function closeButtonHandler() {
   popup.classList.remove("popup_opened");
-  removeEventListeners();
+  removeFormEventListeners();
 }
 //функция обработки нажатия на кнопку добавить
 function addButtonHandler() {
@@ -159,7 +159,7 @@ function formAddHandler(evt) {
   initialElements.push({ title: popupFirstInput.value, imageLink: popupSecondInput.value });
   appendElement(initialElements[initialElements.length - 1], elements);
   popup.classList.remove("popup_opened");
-  removeEventListeners();
+  removeFormEventListeners();
 }
 // обработка нажатия на кнопку закрыть для второй формы.
 function popupEnlargedCloseButtonHandler() {
@@ -171,3 +171,13 @@ editButton.addEventListener("click", editButtonHandler);
 closeButton.addEventListener("click", closeButtonHandler);
 addButton.addEventListener("click", addButtonHandler);
 popupEnlargedCloseButton.addEventListener("click", popupEnlargedCloseButtonHandler);
+
+//testzone
+// Закрытие всплывающих окон по Esc вешать при открытии попапа и снимать при закрытии
+document.addEventListener("keyup", evt => { if(evt.keyCode === 27){console.log(evt.key);popupEnlargedCloseButtonHandler();closeButtonHandler();}});
+popup.addEventListener("click", evt => {popupEnlargedCloseButtonHandler();closeButtonHandler();} );
+// popup.addEventListener('keyup', function (evt) {
+//   if (evt.keyCode === 27){
+//     closeButtonHandler();
+//   }
+// });
