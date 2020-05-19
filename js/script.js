@@ -69,11 +69,14 @@ function deleteElementButtonHandler(evt) {
   evt.target.removeEventListener("click", likeButtonHandler);
   evt.target.removeEventListener('click', deleteElementButtonHandler);
 };
-
+//функция открытия попапа при клике на изображение
 function elementImageHandler(evt) {
   popupEnlargedImage.src = evt.target.src;
   popupEnlargedCaption.textContent = evt.target.alt;
   document.addEventListener('keyup', closeAnyPopupAtEscape);
+  popupEnlarged.addEventListener('click', (evt) => { //закрытие по клику на оверлей, с фильтрацией клика по попапу
+    if (!popupEnlargedImage.contains(evt.target)&&!popupEnlargedCaption.contains(evt.target)) {popupEnlargedCloseButtonHandler();} //отфильтруем и подпись под картинкой
+  });
   popupEnlarged.classList.toggle("popup-enlarged_opened");
 };
 
@@ -93,13 +96,13 @@ function makeListenerDeleteButton() {
 };
 
 
-//функция закрытия любого попапа по Esc
-function closeAnyPopupAtEscape(evt){
-  if(evt.key === 'Escape'){
-  popupEnlargedCloseButtonHandler();
-  closeButtonHandler();
-  popupEditProfileCloseButtonHandler();
-}
+//функция закрытия любого из трех попапов по нажатию на  Esc
+function closeAnyPopupAtEscape(evt) {
+  if (evt.key === 'Escape') {
+    popupEnlargedCloseButtonHandler();
+    closeButtonHandler();
+    popupEditProfileCloseButtonHandler();
+  }
 };
 
 // функция рендеринга одного элемента
@@ -138,7 +141,7 @@ function cleanPopupValues() {
 function removeFormEventListeners() {
   formElement.removeEventListener("submit", formEditHandler);
   formElement.removeEventListener("submit", formAddHandler);
-  document.addEventListener('click',closeAnyPopupAtEscape);
+  document.addEventListener('click', closeAnyPopupAtEscape);
 }
 
 //функция обработки нажатия на кнопку редактировать
@@ -147,14 +150,15 @@ function editButtonHandler() {
   popupEditProfileVocation.value = profileVocation.textContent;
   const popupEditProfileInactiveButtonClass = 'popup-edit-profile__action-button_disabled';
   const popupEditProfileAnyInput = ".popup-edit-profile__input";
-  const popupEditProfileActionButtonClass= ".popup-edit-profile__action-button";
-  refreshButtonState(popupEditProfileFormElement, popupEditProfileAnyInput,popupEditProfileActionButtonClass, popupEditProfileInactiveButtonClass); //обновим состояние кнопки
+  const popupEditProfileActionButtonClass = ".popup-edit-profile__action-button";
+  refreshButtonState(popupEditProfileFormElement, popupEditProfileAnyInput, popupEditProfileActionButtonClass, popupEditProfileInactiveButtonClass); //обновим состояние кнопки
   popupEditProfileFormElement.addEventListener("submit", formEditHandler);
-  //document.addEventListener('keyup', (evt => { if(evt.key === 'Escape'){popupEditProfileCloseButtonHandler()} }));
-  document.addEventListener('keyup', closeAnyPopupAtEscape);
+  document.addEventListener('keyup', closeAnyPopupAtEscape); //грубо и возможно стоит переделать
+  popupEditProfile.addEventListener('click', (evt) => { //закрытие по клику на оверлей, с фильтрацией клика по попапу
+    if (!popupEditProfileFormElement.contains(evt.target)) { popupEditProfileCloseButtonHandler(); }
+  });
   popupEditProfile.classList.add("popup-edit-profile_opened");
 }
-
 
 //функция обработки нажатия на кнопку закрыть
 function closeButtonHandler() {
@@ -162,7 +166,7 @@ function closeButtonHandler() {
   removeFormEventListeners();
 }
 
-function popupEditProfileCloseButtonHandler(evt,somevar) {
+function popupEditProfileCloseButtonHandler() {
   popupEditProfile.classList.remove("popup-edit-profile_opened");
   removeFormEventListeners();
 }
@@ -170,12 +174,11 @@ function popupEditProfileCloseButtonHandler(evt,somevar) {
 //функция обработки нажатия на кнопку добавить
 function addButtonHandler() {
   cleanPopupValues();
-  popupHeading.textContent = "Новое место";
-  popupName.placeholder = "Название";
-  popupUrl.placeholder = "Ссылка на картинку";
-  popupActionButton.textContent = "Создать";
   formElement.addEventListener("submit", formAddHandler);
   document.addEventListener('keyup', closeAnyPopupAtEscape);
+  popup.addEventListener('click', (evt) => { //закрытие по клику на оверлей, с фильтрацией клика по попапу
+    if (!formElement.contains(evt.target)) { closeButtonHandler(); }
+  });
   popup.classList.add("popup_opened");
 }
 //функция обработчик формы редактирования
@@ -194,19 +197,14 @@ function formAddHandler(evt) {
   popup.classList.remove("popup_opened");
   removeFormEventListeners();
 }
-// обработка нажатия на кнопку закрыть для второй формы.
+// обработка нажатия на кнопку закрыть для попапа увеливающего изображения.
 function popupEnlargedCloseButtonHandler() {
   popupEnlarged.classList.remove("popup-enlarged_opened");
 }
 
-
 //ждуны слушатели
 editButton.addEventListener("click", editButtonHandler);
-popupEditProfileCloseButton.addEventListener('click',popupEditProfileCloseButtonHandler);
+popupEditProfileCloseButton.addEventListener('click', popupEditProfileCloseButtonHandler);
 closeButton.addEventListener("click", closeButtonHandler);
 addButton.addEventListener("click", addButtonHandler);
 popupEnlargedCloseButton.addEventListener("click", popupEnlargedCloseButtonHandler);
-
-
-
-popupEditProfile.addEventListener('click',popupEditProfileCloseButtonHandler);
