@@ -1,0 +1,13 @@
+@import url("./_active/popup__input-error_active.css");
+.popup__input-error{
+  visibility: hidden;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 15px;
+  color: #FF0000;
+  margin: 0 0 13px 36px;
+  display: inline-block;
+  height:15px ;
+  }
