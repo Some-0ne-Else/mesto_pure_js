@@ -28,16 +28,25 @@ const initialElements = [
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
 const elements = document.querySelector('.elements'); //цель для вставки новых элементов на страницу
+
+const popupEditProfile = document.querySelector(".popup-edit-profile");
+const popupEditProfileCloseButton = document.querySelector(".popup-edit-profile__close-button");
+const popupEditProfileActionButton = document.querySelector(".popup-edit-profile__action-button");
+const popupEditProfileFormElement = document.querySelector(".popup-edit-profile__container");
+const popupEditProfileHeading = document.querySelector(".popup-edit-profile__heading");
+const profileFullName = document.querySelector(".profile__full-name");
+const profileVocation = document.querySelector(".profile__vocation");
+const popupEditProfileFullName = document.querySelector("#full-name");
+const popupEditProfileVocation = document.querySelector("#vocation");
+
 const popup = document.querySelector(".popup");
 const closeButton = document.querySelector(".popup__close-button");
 const popupActionButton = document.querySelector(".popup__action-button");
-
 const formElement = document.querySelector(".popup__container");
 const popupHeading = document.querySelector(".popup__heading");
-const profileFullName = document.querySelector(".profile__full-name");
-const profileVocation = document.querySelector(".profile__vocation");
 const popupFirstInput = document.querySelector("#first-input");
 const popupSecondInput = document.querySelector("#second-input");
+
 const popupEnlarged = document.querySelector(".popup-enlarged");
 const popupEnlargedImage = document.querySelector(".popup-enlarged__image");
 const popupEnlargedCloseButton = document.querySelector(".popup-enlarged__close-button");
@@ -88,7 +97,7 @@ function renderElement(item) {
   element.querySelector('.element__image').alt = element.querySelector('.element__title').textContent; //alt будет содержать значение заголовка элемента (карточки)
   return element;
 }
-
+//функция добавления элемента на страницу принимает пар1 элемент пар2 куда вставляем
 function appendElement(element, targetElement) {
   // отображаем на странице
   //const elements = document.querySelector('.elements'); //цель для вставки
@@ -121,21 +130,24 @@ function removeFormEventListeners() {
 //функция обработки нажатия на кнопку редактировать
 function editButtonHandler() {
   // очищать не нужно т.к. данные попапа затираются данными со страницы
-  popupHeading.textContent = "Редактировать профиль";
-  popupFirstInput.placeholder = "Имя полностью";
-  popupSecondInput.placeholder = "Призвание";
-  popupFirstInput.value = profileFullName.textContent;
-  popupSecondInput.value = profileVocation.textContent;
-  popupActionButton.textContent = "Сохранить"
-  formElement.addEventListener("submit", formEditHandler);
-  popup.classList.add("popup_opened");
+  popupEditProfileFullName.value = profileFullName.textContent;
+  popupEditProfileVocation.value = profileVocation.textContent;
+  popupEditProfileFormElement.addEventListener("submit", formEditHandler);
+  popupEditProfile.classList.add("popup-edit-profile_opened");
 }
 
 //функция обработки нажатия на кнопку закрыть
 function closeButtonHandler() {
   popup.classList.remove("popup_opened");
-  removeFormEventListeners();
+  removeFormEventListeners(); // проверить функцию
 }
+
+function popupEditProfileCloseButtonHandler() {
+  popupEditProfile.classList.remove("popup-edit-profile_opened");
+  removeFormEventListeners(); // проверить функцию
+}
+
+
 //функция обработки нажатия на кнопку добавить
 function addButtonHandler() {
   cleanPopupValues();
