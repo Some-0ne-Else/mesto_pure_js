@@ -27,10 +27,11 @@ const initialElements = [
 
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
-const elements = document.querySelector('.elements'); //цель для вставки
+const elements = document.querySelector('.elements'); //цель для вставки новых элементов на страницу
+const popup = document.querySelector(".popup");
 const closeButton = document.querySelector(".popup__close-button");
 const popupActionButton = document.querySelector(".popup__action-button");
-const popup = document.querySelector(".popup");
+
 const formElement = document.querySelector(".popup__container");
 const popupHeading = document.querySelector(".popup__heading");
 const profileFullName = document.querySelector(".profile__full-name");
@@ -111,7 +112,7 @@ function cleanPopupValues() {
   popupFirstInput.value = null;
   popupSecondInput.value = null;
 }
-//функция удаления обрабочиков, путь тернист и видимо ошибочен.
+//функция удаления обработчиков
 function removeFormEventListeners() {
   formElement.removeEventListener("submit", formEditHandler);
   formElement.removeEventListener("submit", formAddHandler);
