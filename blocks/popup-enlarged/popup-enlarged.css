@@ -10,7 +10,7 @@
   height: 100%;
   z-index: 1;
   position: fixed;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.75);
   justify-content: center;
   align-items: center;
   display: flex;

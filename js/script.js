@@ -25,6 +25,10 @@ const initialElements = [
   }
 ];
 
+/* Пришлось отказаться от переиспользования одного и того же шаблона popup (был единый для форм редактирования и добавления т.к. идентичны по компоновке на 100%) ввиду задания 6 работы
+ прямо указывающего на использование стандартных сообщений об ошибках при валидации форм. */
+
+
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
 const elements = document.querySelector('.elements'); //цель для вставки новых элементов на страницу
@@ -44,8 +48,8 @@ const closeButton = document.querySelector(".popup__close-button");
 const popupActionButton = document.querySelector(".popup__action-button");
 const formElement = document.querySelector(".popup__container");
 const popupHeading = document.querySelector(".popup__heading");
-const popupFirstInput = document.querySelector("#first-input");
-const popupSecondInput = document.querySelector("#second-input");
+const popupName = document.querySelector("#name");
+const popupUrl = document.querySelector("#url");
 
 const popupEnlarged = document.querySelector(".popup-enlarged");
 const popupEnlargedImage = document.querySelector(".popup-enlarged__image");
@@ -69,6 +73,7 @@ function deleteElementButtonHandler(evt) {
 function elementImageHandler(evt) {
   popupEnlargedImage.src = evt.target.src;
   popupEnlargedCaption.textContent = evt.target.alt;
+  document.addEventListener('keyup', closeAnyPopupAtEscape);
   popupEnlarged.classList.toggle("popup-enlarged_opened");
 };
 
@@ -87,6 +92,16 @@ function makeListenerDeleteButton() {
   deleteButton.addEventListener('click', deleteElementButtonHandler);
 };
 
+
+//функция закрытия любого попапа по Esc
+function closeAnyPopupAtEscape(evt){
+  if(evt.key === 'Escape'){
+  popupEnlargedCloseButtonHandler();
+  closeButtonHandler();
+  popupEditProfileCloseButtonHandler();
+}
+};
+
 // функция рендеринга одного элемента
 function renderElement(item) {
   const elementTemplate = document.querySelector('.element__template').content;
@@ -99,10 +114,8 @@ function renderElement(item) {
 }
 //функция добавления элемента на страницу принимает пар1 элемент пар2 куда вставляем
 function appendElement(element, targetElement) {
-  // отображаем на странице
-  //const elements = document.querySelector('.elements'); //цель для вставки
-  targetElement.prepend(renderElement(element));
-  //создаем ждунов слушателей
+  targetElement.prepend(renderElement(element));  // отображаем на странице
+  //создаем ждунов-слушателей
   makeListenerLikeButton(document.querySelector(".element__like"));
   makeListenerDeleteButton();
   makeListenerElementImage();
@@ -118,58 +131,65 @@ appendInitialElements();
 
 // функция очистки значений popup раз уж мы пошли путем эксплуатации одной html формы -)
 function cleanPopupValues() {
-  popupFirstInput.value = null;
-  popupSecondInput.value = null;
+  popupName.value = null;
+  popupUrl.value = null;
 }
 //функция удаления обработчиков
 function removeFormEventListeners() {
   formElement.removeEventListener("submit", formEditHandler);
   formElement.removeEventListener("submit", formAddHandler);
+  document.addEventListener('click',closeAnyPopupAtEscape);
 }
 
 //функция обработки нажатия на кнопку редактировать
 function editButtonHandler() {
-  // очищать не нужно т.к. данные попапа затираются данными со страницы
   popupEditProfileFullName.value = profileFullName.textContent;
   popupEditProfileVocation.value = profileVocation.textContent;
+  const popupEditProfileInactiveButtonClass = 'popup-edit-profile__action-button_disabled';
+  const popupEditProfileAnyInput = ".popup-edit-profile__input";
+  const popupEditProfileActionButtonClass= ".popup-edit-profile__action-button";
+  refreshButtonState(popupEditProfileFormElement, popupEditProfileAnyInput,popupEditProfileActionButtonClass, popupEditProfileInactiveButtonClass); //обновим состояние кнопки
   popupEditProfileFormElement.addEventListener("submit", formEditHandler);
+  //document.addEventListener('keyup', (evt => { if(evt.key === 'Escape'){popupEditProfileCloseButtonHandler()} }));
+  document.addEventListener('keyup', closeAnyPopupAtEscape);
   popupEditProfile.classList.add("popup-edit-profile_opened");
 }
+
 
 //функция обработки нажатия на кнопку закрыть
 function closeButtonHandler() {
   popup.classList.remove("popup_opened");
-  removeFormEventListeners(); // проверить функцию
+  removeFormEventListeners();
 }
 
-function popupEditProfileCloseButtonHandler() {
+function popupEditProfileCloseButtonHandler(evt,somevar) {
   popupEditProfile.classList.remove("popup-edit-profile_opened");
-  removeFormEventListeners(); // проверить функцию
+  removeFormEventListeners();
 }
-
 
 //функция обработки нажатия на кнопку добавить
 function addButtonHandler() {
   cleanPopupValues();
   popupHeading.textContent = "Новое место";
-  popupFirstInput.placeholder = "Название";
-  popupSecondInput.placeholder = "Ссылка на картинку";
+  popupName.placeholder = "Название";
+  popupUrl.placeholder = "Ссылка на картинку";
   popupActionButton.textContent = "Создать";
   formElement.addEventListener("submit", formAddHandler);
+  document.addEventListener('keyup', closeAnyPopupAtEscape);
   popup.classList.add("popup_opened");
 }
 //функция обработчик формы редактирования
 function formEditHandler(evt) {
   evt.preventDefault();
-  profileFullName.textContent = popupFirstInput.value;
-  profileVocation.textContent = popupSecondInput.value;
-  popup.classList.remove("popup_opened");
+  profileFullName.textContent = popupEditProfileFullName.value;
+  profileVocation.textContent = popupEditProfileVocation.value;
+  popupEditProfile.classList.remove("popup-edit-profile_opened");
   removeFormEventListeners();
 }
 //функция обработчик формы добавления
 function formAddHandler(evt) {
   evt.preventDefault();
-  initialElements.push({ title: popupFirstInput.value, imageLink: popupSecondInput.value });
+  initialElements.push({ title: popupName.value, imageLink: popupUrl.value });
   appendElement(initialElements[initialElements.length - 1], elements);
   popup.classList.remove("popup_opened");
   removeFormEventListeners();
@@ -179,18 +199,14 @@ function popupEnlargedCloseButtonHandler() {
   popupEnlarged.classList.remove("popup-enlarged_opened");
 }
 
+
 //ждуны слушатели
 editButton.addEventListener("click", editButtonHandler);
+popupEditProfileCloseButton.addEventListener('click',popupEditProfileCloseButtonHandler);
 closeButton.addEventListener("click", closeButtonHandler);
 addButton.addEventListener("click", addButtonHandler);
 popupEnlargedCloseButton.addEventListener("click", popupEnlargedCloseButtonHandler);
 
-//testzone
-// Закрытие всплывающих окон по Esc вешать при открытии попапа и снимать при закрытии
-document.addEventListener("keyup", evt => { if(evt.keyCode === 27){console.log(evt.key);popupEnlargedCloseButtonHandler();closeButtonHandler();}});
-popup.addEventListener("click", evt => {popupEnlargedCloseButtonHandler();closeButtonHandler();} );
-// popup.addEventListener('keyup', function (evt) {
-//   if (evt.keyCode === 27){
-//     closeButtonHandler();
-//   }
-// });
+
+
+popupEditProfile.addEventListener('click',popupEditProfileCloseButtonHandler);

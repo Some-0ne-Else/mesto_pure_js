@@ -28,11 +28,14 @@
       <p class="footer__copyright">© 2020 Mesto Russia</p>
     </footer>
     <section class="popup-edit-profile">
+      <div class="popup-edit-profile"></div>
         <form class="popup-edit-profile__container">
           <h2 class="popup-edit-profile__heading">Редактировать профиль</h2>
           <button type="button" class="popup-edit-profile__close-button"></button>
-          <input type="text" class="popup-edit-profile__input" name="fullname" id="full-name" placeholder="Имя полностью" required>
-          <input type="text" class="popup-edit-profile__input" name="vocation" id="vocation" placeholder="Призвание" required>
+          <input type="text" class="popup-edit-profile__input" name="fullname" id="full-name" placeholder="Имя полностью" minlength="2" maxlength="40"  pattern="[a-zA-ZА-ЯЁа-яё\s\-]+" required novalidate>
+          <p class="popup-edit-profile__input-error" id="full-name-error"></p>
+          <input type="text" class="popup-edit-profile__input" name="vocation" id="vocation" placeholder="Призвание" minlength="2" maxlength="200"  required novalidate>
+          <p class="popup-edit-profile__input-error" id="vocation-error"></p>
           <button type="submit" class="popup-edit-profile__action-button">Сохранить</button>
         </form>
     </section>
@@ -40,8 +43,10 @@
       <form class="popup__container">
         <h2 class="popup__heading"></h2>
         <button type="button" class="popup__close-button"></button>
-        <input type="text" class="popup__input" name="fullname" id="first-input" placeholder="" required>
-        <input type="text" class="popup__input" name="vocation" id="second-input" placeholder="" required>
+        <input type="text" class="popup__input" name="name" id="name" placeholder="" minlength="2" maxlength="30" pattern="[a-zA-ZА-ЯЁа-яё\s\-]+" required novalidate>
+        <p class="popup__input-error" id="name-error"></p>
+        <input type="url" class="popup__input" name="url" id="url" placeholder="" required novalidate>
+        <p class="popup__input-error" id="url-error"></p>
         <button type="submit" class="popup__action-button">Сохранить</button>
       </form>
   </section>
@@ -61,6 +66,7 @@
     </template>
   </div>
   <script src="./js/script.js"></script>
+  <script src="./js/validate.js"></script>
   </body>
 
   </html>
