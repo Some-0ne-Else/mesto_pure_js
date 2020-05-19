@@ -1,5 +1,6 @@
-@import url("./_type/_error/popup__input_type_error.css");
-.popup__input {
+@import url("./_type/_error/popup-edit-profile__input_type_error.css");
+
+.popup-edit-profile__input {
   border: 0;
   border-bottom: 1px solid #000000;
   max-width: 358px;
@@ -15,8 +16,10 @@
   padding-bottom: 13px;
 }
 
+
+
 @media screen and (max-width: 540px) {
-  .popup__input {
+  .popup-edit-profile__input {
     margin: 0 0 30px 20px;
     max-width: 240px;
   }
