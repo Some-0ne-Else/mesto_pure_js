@@ -15,7 +15,7 @@
 ------
 
 [**Project on Git Pages**](https://some-0ne-else.github.io/mesto/)
-**Figma**
 
-* [Ссылка на макет в Figma](https://www.figma.com/file/StZjf8HnoeLdiXS7dYrLAh/JavaScript.-Sprint-4)
+
+**Figma**(https://www.figma.com/file/StZjf8HnoeLdiXS7dYrLAh/JavaScript.-Sprint-4)
 
