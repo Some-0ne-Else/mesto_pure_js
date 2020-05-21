@@ -154,7 +154,7 @@ function editButtonHandler() {
   // refreshButtonState(popupEditProfileFormElement, popupEditProfileAnyInput, popupEditProfileActionButtonClass, popupEditProfileInactiveButtonClass); //обновим состояние кнопки
   popupEditProfileFormElement.addEventListener("submit", formEditHandler);
   document.addEventListener('keyup', closeAnyPopupAtEscape);
-  popupEditProfile.addEventListener('click', (evt) => { //закрытие по клику на оверлей, с фильтрацией клика по попапу
+  popupEditProfile.addEventListener('mousedown', (evt) => { //закрытие по клику на оверлей, с фильтрацией клика по попапу используем mousedown для того чтобы избежать misclick'а
     if (!popupEditProfileFormElement.contains(evt.target)) { popupEditProfileCloseButtonHandler(); }
   });
   popupEditProfile.classList.add("popup-edit-profile_opened");
@@ -180,7 +180,7 @@ function addButtonHandler() {
   cleanPopupValues();
   formElement.addEventListener("submit", formAddHandler);
   document.addEventListener('keyup', closeAnyPopupAtEscape);
-  popup.addEventListener('click', (evt) => { //закрытие по клику на оверлей, с фильтрацией клика по попапу
+  popup.addEventListener('mousedown', (evt) => { //закрытие по клику на оверлей, с фильтрацией клика по попапу
     if (!formElement.contains(evt.target)) { closeButtonHandler(); }
   });
   popup.classList.add("popup_opened");
