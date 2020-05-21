@@ -44,6 +44,7 @@ const popupEditProfileVocation = document.querySelector("#vocation");
 const popup = document.querySelector(".popup");
 const closeButton = document.querySelector(".popup__close-button");
 const formElement = document.querySelector(".popup__container");
+const popupActionButton =  document.querySelector(".popup-edit-profile__action-button");
 const popupName = document.querySelector("#name");
 const popupUrl = document.querySelector("#url");
 const popupEnlarged = document.querySelector(".popup-enlarged");
@@ -145,10 +146,12 @@ function removeFormEventListeners() {
 function editButtonHandler() {
   popupEditProfileFullName.value = profileFullName.textContent;
   popupEditProfileVocation.value = profileVocation.textContent;
+  /* Без функции ниже у нас кнопка будет визуально не акивной при открытии формы, т.к. данные в форму закачиваются из страницы уже после того инициализировалась валидация, причем данные передаются не методом инпут в форму, что и вызвает данное поведение т.к. на момент инциализации валидации, значения в попапе невалидны = ""*/
+
   // const popupEditProfileInactiveButtonClass = 'popup-edit-profile__action-button_disabled';
   // const popupEditProfileAnyInput = ".popup-edit-profile__input";
   // const popupEditProfileActionButtonClass = ".popup-edit-profile__action-button";
-  // //refreshButtonState(popupEditProfileFormElement, popupEditProfileAnyInput, popupEditProfileActionButtonClass, popupEditProfileInactiveButtonClass); //обновим состояние кнопки
+  // refreshButtonState(popupEditProfileFormElement, popupEditProfileAnyInput, popupEditProfileActionButtonClass, popupEditProfileInactiveButtonClass); //обновим состояние кнопки
   popupEditProfileFormElement.addEventListener("submit", formEditHandler);
   document.addEventListener('keyup', closeAnyPopupAtEscape);
   popupEditProfile.addEventListener('click', (evt) => { //закрытие по клику на оверлей, с фильтрацией клика по попапу
