@@ -163,8 +163,8 @@ function editButtonHandler() {
 //функция обработки нажатия на кнопку закрыть
 function closeButtonHandler() {
   popup.classList.remove("popup_opened");
-  hideInputError (popupEditProfile, popupEditProfileFullName, 'popup-edit-profile__input_type_error', 'popup-edit-profile__input-error_active');
-  hideInputError (popupEditProfile, popupEditProfileVocation, 'popup-edit-profile__input_type_error', 'popup-edit-profile__input-error_active');
+  hideInputError (popup, popupName, 'popup-edit-profile__input_type_error', 'popup-edit-profile__input-error_active');
+  hideInputError (popup, popupUrl, 'popup-edit-profile__input_type_error', 'popup-edit-profile__input-error_active');
   removeFormEventListeners();
 }
 
