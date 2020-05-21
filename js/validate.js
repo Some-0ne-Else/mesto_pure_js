@@ -56,7 +56,7 @@ const setEventListeners = (formElement, inputSelector, submitButtonSelector, ina
   });
 };
 
-//функция перепроверяющая актуальность состояния кнопки, в случае если данные полей попапа изменились позднее
+//функция перепроверяющая актуальность состояния кнопки, в случае если данные полей попапа изменились _позднее_ _и_ без использования метода _input_
 const refreshButtonState = (formElement, inputSelector, submitButtonSelector, inactiveButtonClass) => {
   const inputList = Array.from(formElement.querySelectorAll(inputSelector)); //соберем все инпуты  формы и сделаем из них массив
   const buttonElement = formElement.querySelector(submitButtonSelector);
@@ -65,7 +65,7 @@ const refreshButtonState = (formElement, inputSelector, submitButtonSelector, in
 
 
 
-//убер функция включающая валидацию всех форм на странице (на самом деле только элементов с классом ".form")
+//убер функция включающая валидацию "всех" форм на странице
 const enableValidation = ({ formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass }) => {
   const formList = Array.from(document.querySelectorAll(formSelector)); //сделаем массив из массивоподобного списка всех форм на странице (см описание функции касательно всех)
   formList.forEach((formElement) => { //для каждой формы
@@ -74,7 +74,7 @@ const enableValidation = ({ formSelector, inputSelector, submitButtonSelector, i
     });
     setEventListeners(formElement, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass);
 
-  }); //закончился 1й (внешний) форыч
+  });
 };
 
 //Для простоты и последующей интеграции с беком
