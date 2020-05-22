@@ -30,15 +30,14 @@ const initialElements = [
 
 
 /*константы для рендеринга */
-
 const elements = document.querySelector('.elements'); //цель для вставки новых элементов на страницу
+const elementTemplate = document.querySelector('.element__template').content;
 
 /*константы элементов страницы */
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
 const profileFullName = document.querySelector(".profile__full-name");
 const profileVocation = document.querySelector(".profile__vocation");
-const elementTemplate = document.querySelector('.element__template').content;
 
 /* константы попапов*/
 const popupEdit = document.querySelector(".popup_edit");
@@ -67,14 +66,14 @@ const configValidation = {
 const allInputs = document.querySelectorAll(`.${configValidation.errorClass}`.match(/\D+\_{2,2}[a-z-]+/))
 
 // функция очищающая вывод ошибок при закрыти попапов
-function clearValidationErrors(){
-  allInputs.forEach( (item) => item.textContent="" )
+function clearValidationErrors() {
+  allInputs.forEach((item) => item.textContent = "")
 }
 //Фунция закрытия попапа
- function closeAnyPopup(popupClassMarker){
- const popupToClose = document.querySelector(`.${popupClassMarker}`);
- clearValidationErrors();
- popupToClose.classList.remove(popupClassMarker)
+function closeAnyPopup(popupClassMarker) {
+  const popupToClose = document.querySelector(`.${popupClassMarker}`);
+  clearValidationErrors();
+  popupToClose.classList.remove(popupClassMarker)
 }
 
 //функция закрытия попапов по нажатию на Esc
@@ -85,21 +84,21 @@ function closePopupAtEscape(evt) {
 };
 
 // функция закрытия попапа по клику на оверлее
-function closePopupAtOverlayClick(evt){
-if(this  === evt.target)  { closeButtonHandler(); }
+function closePopupAtOverlayClick(evt) {
+  if (this === evt.target) { closeButtonHandler(); }
 }
 
 //Функция снятия слушателей
-function removeEvLisFromPopup(evt){
-document.removeEventListener('keyup', closePopupAtEscape);
+function removeEvLisFromPopup(evt) {
+  document.removeEventListener('keyup', closePopupAtEscape);
 }
 
-/* РЕНДЕРИНГ ИЗНАЧАЛЬНОГО СОСТОЯНИЯ */
+/* РЕНДЕРИНГ ИЗНАЧАЛЬНОГО СОСТОЯНИЯ (ДАННЫЕ ИЗ МАССИВА) */
 
 // функция подготовки к вставке одного элемента
 function prepareInitialElement(item) {
   const element = elementTemplate.cloneNode(true);
-  const elementImage =  element.querySelector('.element__image');
+  const elementImage = element.querySelector('.element__image');
   const deleteButton = element.querySelector(".element__delete-button");
   const elementLike = element.querySelector(".element__like");
   const elementTitle = element.querySelector('.element__title');
@@ -167,14 +166,10 @@ function addButtonHandler() {
   popupAdd.classList.add(popupClassMarker);
 }
 
-function appendNewElement(newElement, targetElement) {
-  targetElement.prepend(prepareNewElement(newElement));  // отображаем на странице
-}
-
 // функция подготовки к вставке нового элемента
 function prepareNewElement() {
   const element = elementTemplate.cloneNode(true);
-  const elementImage =  element.querySelector('.element__image');
+  const elementImage = element.querySelector('.element__image');
   const deleteButton = element.querySelector(".element__delete-button");
   const elementLike = element.querySelector(".element__like")
   const elementTitle = element.querySelector('.element__title')
@@ -187,6 +182,11 @@ function prepareNewElement() {
   elementImage.addEventListener("click", elementImageHandler);
   return element;
 }
+
+// Добавление нового элемента без задейсствия массива изначальных элементов т.к. введение корректная реализация с массивом потребует введения id для элементов
+function appendNewElement(newElement, targetElement) {
+  targetElement.prepend(prepareNewElement(newElement));  // отображаем на странице
+}
 //функция обработчик формы добавления
 function formAddHandler(evt) {
   evt.preventDefault();
@@ -198,7 +198,7 @@ function formAddHandler(evt) {
 /* УВЕЛИЧЕНИЕ */
 
 //функции обработчики событий
-  function likeButtonHandler(evt) {
+function likeButtonHandler(evt) {
   evt.target.classList.toggle("element__like_active");
 };
 
@@ -222,5 +222,5 @@ function deleteElementButtonHandler(evt) {
 
 //ждуны слушатели
 editButton.addEventListener("click", editButtonHandler);
-allCloseButtons.forEach((item) => {item.addEventListener("click", closeButtonHandler)});
+allCloseButtons.forEach((item) => { item.addEventListener("click", closeButtonHandler) });
 addButton.addEventListener("click", addButtonHandler);
