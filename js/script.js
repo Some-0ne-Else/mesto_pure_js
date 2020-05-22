@@ -1,27 +1,33 @@
 const initialElements = [
   {
     title: 'Сибуя',
-    imageLink: './images/element__image_sibuya.jpg'
+    imageLink: './images/element__image_sibuya.jpg',
+    id: 1,
   },
   {
     title: 'Прага',
-    imageLink: './images/element__image_praga.jpg'
+    imageLink: './images/element__image_praga.jpg',
+    id: 2,
   },
   {
     title: 'Иордания',
-    imageLink: './images/element__image_iordaniya.jpg'
+    imageLink: './images/element__image_iordaniya.jpg',
+    id: 3,
   },
   {
     title: 'Швейцария',
-    imageLink: './images/element__image_switzerland.jpg'
+    imageLink: './images/element__image_switzerland.jpg',
+    id: 4,
   },
   {
     title: 'Греция',
-    imageLink: './images/element__image_greece.jpg'
+    imageLink: './images/element__image_greece.jpg',
+    id: 5,
   },
   {
     title: 'Черногория',
-    imageLink: './images/element__image_montenegro.jpg'
+    imageLink: './images/element__image_montenegro.jpg',
+    id: 6,
   }
 ];
 
@@ -63,6 +69,7 @@ const configValidation = {
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__input-error_active'
 };
+let uID = initialElements.length; //обеспечим уникальность идентификатора в рамках массива
 const allInputs = document.querySelectorAll(`.${configValidation.errorClass}`.match(/\D+\_{2,2}[a-z-]+/))
 
 // функция очищающая вывод ошибок при закрыти попапов
@@ -98,12 +105,14 @@ function removeEvLisFromPopup(evt) {
 // функция подготовки к вставке одного элемента
 function prepareInitialElement(item) {
   const element = elementTemplate.cloneNode(true);
+  const elementWrapper = element.querySelector('.element');
   const elementImage = element.querySelector('.element__image');
   const deleteButton = element.querySelector(".element__delete-button");
   const elementLike = element.querySelector(".element__like");
   const elementTitle = element.querySelector('.element__title');
   // наполняем содержимым
   elementImage.src = item.imageLink;
+  elementWrapper.setAttribute('id', item.id);
   elementTitle.textContent = item.title;
   elementImage.alt = elementTitle.textContent; //alt будет содержать значение заголовка элемента (карточки)
   deleteButton.addEventListener('click', deleteElementButtonHandler);
@@ -123,7 +132,6 @@ function appendInitialElements() {
 
 // Вызов функции добавления изначальных элементов
 appendInitialElements();
-
 /* ФОРМА РЕДАКТИРОВАНИЯ */
 
 //функция обработчик формы редактирования
@@ -166,34 +174,19 @@ function addButtonHandler() {
   popupAdd.classList.add(popupClassMarker);
 }
 
-// функция подготовки к вставке нового элемента
-function prepareNewElement() {
-  const element = elementTemplate.cloneNode(true);
-  const elementImage = element.querySelector('.element__image');
-  const deleteButton = element.querySelector(".element__delete-button");
-  const elementLike = element.querySelector(".element__like")
-  const elementTitle = element.querySelector('.element__title')
-  // наполняем содержимым  initialElements.push({ title: popupName.value, imageLink: popupUrl.value });
-  elementImage.src = popupUrl.value
-  elementTitle.textContent = popupName.value
-  elementImage.alt = elementTitle.textContent; //alt будет содержать значение заголовка элемента (карточки)
-  deleteButton.addEventListener('click', deleteElementButtonHandler);
-  elementLike.addEventListener("click", likeButtonHandler);
-  elementImage.addEventListener("click", elementImageHandler);
-  return element;
-}
-
-// Добавление нового элемента без задейсствия массива изначальных элементов т.к. введение корректная реализация с массивом потребует введения id для элементов
-function appendNewElement(newElement, targetElement) {
-  targetElement.prepend(prepareNewElement(newElement));  // отображаем на странице
-}
 //функция обработчик формы добавления
 function formAddHandler(evt) {
   evt.preventDefault();
-
-  appendNewElement(prepareNewElement(), elements)
+  initialElements.push({ title: popupName.value, imageLink: popupUrl.value, id: ++uID });
+  appendInitialElement(initialElements[initialElements.length - 1], elements); //вывод крайнего элемента что был только что положен в базу
   closeAnyPopup(popupClassMarker);
 }
+
+// Добавление нового элемента без задействия массива изначальных элементов т.к. введение корректная реализация с массивом потребует введения id для элементов
+function appendNewElement(newElement, targetElement) {
+  targetElement.prepend(prepareNewElement(newElement));  // отображаем на странице
+}
+
 
 /* УВЕЛИЧЕНИЕ */
 
@@ -213,7 +206,9 @@ function elementImageHandler(evt) {
 
 function deleteElementButtonHandler(evt) {
   const elementToDelete = evt.target.closest('.element');
-  console.log(evt.target.closest('.element'))
+  for (let i = 0; i < initialElements.length; i++) {
+    if (initialElements[i].id === parseInt(elementToDelete.id, 10)) { initialElements.splice(i, 1);}
+  }
   elementToDelete.remove();
   evt.target.removeEventListener("click", elementImageHandler);
   evt.target.removeEventListener("click", likeButtonHandler);
