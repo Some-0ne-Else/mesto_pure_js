@@ -2,14 +2,9 @@
 @import url("../fonts/font.css");
 @import url("../blocks/page/page.css");
 @import url("../blocks/header/header.css");
-@import url("../blocks/popup-edit-profile/popup-edit-profile.css");
-@import url("../blocks/popup-edit-profile/_opened/popup-edit-profile_opened.css");
-@import url("../blocks/popup-edit-profile/__input-error/_active/popup-edit-profile__input-error_active.css");
 @import url("../blocks/popup/popup.css");
 @import url("../blocks/popup/_opened/popup_opened.css");
 @import url("../blocks/popup/__input-error/_active/popup__input-error_active.css");
-@import url("../blocks/popup-enlarged/popup-enlarged.css");
-@import url("../blocks/popup-enlarged/_opened/popup-enlarged_opened.css");
 @import url("../blocks/profile/profile.css");
 @import url("../blocks/elements/elements.css");
 @import url("../blocks/element/element.css");
