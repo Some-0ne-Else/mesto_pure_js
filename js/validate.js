@@ -64,7 +64,6 @@ const refreshButtonState = (formElement, inputSelector, submitButtonSelector, in
 }
 
 
-
 //убер функция включающая валидацию "всех" форм на странице
 const enableValidation = ({ formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass }) => {
   const formList = Array.from(document.querySelectorAll(formSelector)); //сделаем массив из массивоподобного списка всех форм на странице (см описание функции касательно всех)
@@ -77,22 +76,4 @@ const enableValidation = ({ formSelector, inputSelector, submitButtonSelector, i
   });
 };
 
-//Для простоты и последующей интеграции с беком
-const allForms = [{
-  formSelector: '.popup-edit-profile__container',
-  inputSelector: '.popup-edit-profile__input',
-  submitButtonSelector: '.popup-edit-profile__action-button',
-  inactiveButtonClass: 'popup-edit-profile__action-button_disabled',
-  inputErrorClass: 'popup-edit-profile__input_type_error',
-  errorClass: 'popup-edit-profile__input-error_active'
-},
-{
-  formSelector: '.popup__container',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__action-button',
-  inactiveButtonClass: 'popup__action-button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input-error_active'
-}];
-//обработаем все формы полученные из массива
-allForms.forEach(item => enableValidation(item));
+enableValidation(configValidation)
