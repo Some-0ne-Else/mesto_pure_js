@@ -69,18 +69,22 @@ const configValidation = {
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__input-error_active'
 };
-let uID = initialElements.length; //обеспечим уникальность идентификатора в рамках массива
-const allInputs = document.querySelectorAll(`.${configValidation.errorClass}`.match(/\D+\_{2,2}[a-z-]+/))
 
+/* Как чувстовал что скрипач не нужен, поэтому uid сделал отдельным бранчем */
+const allInputsErrors = document.querySelectorAll(`.${configValidation.errorClass}`.match(/\D+\_{2,2}[a-z-]+/))
+const allPopup = document.querySelectorAll(".popup");
 // функция очищающая вывод ошибок при закрыти попапов
 function clearValidationErrors() {
-  allInputs.forEach((item) => item.textContent = "")
+  allInputsErrors.forEach((item) => item.textContent = "")
+  const allInputs = document.querySelectorAll(`.${configValidation.inputErrorClass}`);
+  allInputs.forEach((item) => item.classList.remove(configValidation.inputErrorClass));
 }
 //Фунция закрытия попапа
 function closeAnyPopup(popupClassMarker) {
   const popupToClose = document.querySelector(`.${popupClassMarker}`);
   clearValidationErrors();
-  popupToClose.classList.remove(popupClassMarker)
+  removeEvLisFromPopup();
+  if(popupToClose != null){popupToClose.classList.remove(popupClassMarker)} /* избавимся от ошибок в консоли возникающих из-за щелчков ЛКМ во время анимации */
 }
 
 //функция закрытия попапов по нажатию на Esc
@@ -126,12 +130,14 @@ function appendInitialElement(element, targetElement) {
 }
 
 //функция добавления изначальных элементов на страницу принимает пар1 элемент пар2 куда вставляем
-function appendInitialElements() {
+function appendAllInitialElements() {
   initialElements.forEach(element => appendInitialElement(element, elements));
 }
 
 // Вызов функции добавления изначальных элементов
-appendInitialElements();
+
+appendAllInitialElements();
+
 /* ФОРМА РЕДАКТИРОВАНИЯ */
 
 //функция обработчик формы редактирования
@@ -142,14 +148,17 @@ function formEditHandler(evt) {
   closeAnyPopup(popupClassMarker);
 }
 
+/*функция открытия попап и добавления слушателей для закрытия */
+function openPopupAddEl(popup, popupClassMarker){
+  document.addEventListener('keyup', closePopupAtEscape);
+  popup.classList.add(popupClassMarker);
+}
+
 //функция обработки нажатия на кнопку редактировать
 function editButtonHandler() {
   popupFullName.value = profileFullName.textContent;
   popupVocation.value = profileVocation.textContent;
-  popupEditForm.addEventListener("submit", formEditHandler);
-  document.addEventListener('keyup', closePopupAtEscape);
-  popupEdit.addEventListener('mousedown', closePopupAtOverlayClick); //закрытие по клику на оверлей, с фильтрацией клика по попапу используем mousedown для того чтобы избежать misclick'а часто возникающего при выделении "манипулятором типа мышь" -)
-  popupEdit.classList.add(popupClassMarker);
+  openPopupAddEl(popupEdit,popupClassMarker);
 }
 
 //функция обработки нажатия на кнопку закрытия попапа
@@ -168,25 +177,35 @@ function cleanPopupValues() {
 //функция обработки нажатия на кнопку добавить
 function addButtonHandler() {
   cleanPopupValues();
-  popupAddForm.addEventListener("submit", formAddHandler);
-  document.addEventListener('keyup', closePopupAtEscape);
-  popupAdd.addEventListener('mousedown', closePopupAtOverlayClick);
-  popupAdd.classList.add(popupClassMarker);
+  openPopupAddEl(popupAdd,popupClassMarker);
 }
 
-//функция обработчик формы добавления
-function formAddHandler(evt) {
-  evt.preventDefault();
-  initialElements.push({ title: popupName.value, imageLink: popupUrl.value, id: ++uID });
-  appendInitialElement(initialElements[initialElements.length - 1], elements); //вывод крайнего элемента что был только что положен в базу
-  closeAnyPopup(popupClassMarker);
+// функция подготовки к вставке нового элемента
+function prepareNewElement() {
+  const element = elementTemplate.cloneNode(true);
+  const elementImage = element.querySelector('.element__image');
+  const deleteButton = element.querySelector(".element__delete-button");
+  const elementLike = element.querySelector(".element__like")
+  const elementTitle = element.querySelector('.element__title')
+  elementImage.src = popupUrl.value
+  elementTitle.textContent = popupName.value
+  elementImage.alt = elementTitle.textContent; //alt будет содержать значение заголовка элемента (карточки)
+  deleteButton.addEventListener('click', deleteElementButtonHandler);
+  elementLike.addEventListener("click", likeButtonHandler);
+  elementImage.addEventListener("click", elementImageHandler);
+  return element;
 }
 
-// Добавление нового элемента без задействия массива изначальных элементов т.к. введение корректная реализация с массивом потребует введения id для элементов
+// Добавление нового элемента без задействия массива изначальных элементов
 function appendNewElement(newElement, targetElement) {
   targetElement.prepend(prepareNewElement(newElement));  // отображаем на странице
 }
-
+//функция обработчик формы добавления
+function formAddHandler(evt) {
+  evt.preventDefault();
+  appendNewElement(prepareNewElement(), elements)
+  closeAnyPopup(popupClassMarker);
+}
 
 /* УВЕЛИЧЕНИЕ */
 
@@ -199,16 +218,11 @@ function likeButtonHandler(evt) {
 function elementImageHandler(evt) {
   popupImage.src = evt.target.src;
   popupCaption.textContent = evt.target.alt;
-  document.addEventListener('keyup', closePopupAtEscape);
-  popupEnlarge.addEventListener('mousedown', closePopupAtOverlayClick);
-  popupEnlarge.classList.toggle(popupClassMarker);
+  openPopupAddEl(popupEnlarge,popupClassMarker);
 };
 
 function deleteElementButtonHandler(evt) {
   const elementToDelete = evt.target.closest('.element');
-  for (let i = 0; i < initialElements.length; i++) {
-    if (initialElements[i].id === parseInt(elementToDelete.id, 10)) { initialElements.splice(i, 1);}
-  }
   elementToDelete.remove();
   evt.target.removeEventListener("click", elementImageHandler);
   evt.target.removeEventListener("click", likeButtonHandler);
@@ -219,3 +233,6 @@ function deleteElementButtonHandler(evt) {
 editButton.addEventListener("click", editButtonHandler);
 allCloseButtons.forEach((item) => { item.addEventListener("click", closeButtonHandler) });
 addButton.addEventListener("click", addButtonHandler);
+popupAddForm.addEventListener("submit", formAddHandler);
+popupEditForm.addEventListener("submit", formEditHandler);
+allPopup.forEach((item) => item.addEventListener('mousedown', closePopupAtOverlayClick));
