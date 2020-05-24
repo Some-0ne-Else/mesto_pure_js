@@ -1,27 +1,33 @@
 const initialElements = [
   {
     title: 'Сибуя',
-    imageLink: './images/element__image_sibuya.jpg'
+    imageLink: './images/element__image_sibuya.jpg',
+    id: 1,
   },
   {
     title: 'Прага',
-    imageLink: './images/element__image_praga.jpg'
+    imageLink: './images/element__image_praga.jpg',
+    id: 2,
   },
   {
     title: 'Иордания',
-    imageLink: './images/element__image_iordaniya.jpg'
+    imageLink: './images/element__image_iordaniya.jpg',
+    id: 3,
   },
   {
     title: 'Швейцария',
-    imageLink: './images/element__image_switzerland.jpg'
+    imageLink: './images/element__image_switzerland.jpg',
+    id: 4,
   },
   {
     title: 'Греция',
-    imageLink: './images/element__image_greece.jpg'
+    imageLink: './images/element__image_greece.jpg',
+    id: 5,
   },
   {
     title: 'Черногория',
-    imageLink: './images/element__image_montenegro.jpg'
+    imageLink: './images/element__image_montenegro.jpg',
+    id: 6,
   }
 ];
 
@@ -63,10 +69,10 @@ const configValidation = {
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__input-error_active'
 };
+
 /* Как чувстовал что скрипач не нужен, поэтому uid сделал отдельным бранчем */
 const allInputsErrors = document.querySelectorAll(`.${configValidation.errorClass}`.match(/\D+\_{2,2}[a-z-]+/))
 const allPopup = document.querySelectorAll(".popup");
-
 // функция очищающая вывод ошибок при закрыти попапов
 function clearValidationErrors() {
   allInputsErrors.forEach((item) => item.textContent = "")
@@ -103,12 +109,14 @@ function removeEvLisFromPopup(evt) {
 // функция подготовки к вставке одного элемента
 function prepareInitialElement(item) {
   const element = elementTemplate.cloneNode(true);
+  const elementWrapper = element.querySelector('.element');
   const elementImage = element.querySelector('.element__image');
   const deleteButton = element.querySelector(".element__delete-button");
   const elementLike = element.querySelector(".element__like");
   const elementTitle = element.querySelector('.element__title');
   // наполняем содержимым
   elementImage.src = item.imageLink;
+  elementWrapper.setAttribute('id', item.id);
   elementTitle.textContent = item.title;
   elementImage.alt = elementTitle.textContent; //alt будет содержать значение заголовка элемента (карточки)
   deleteButton.addEventListener('click', deleteElementButtonHandler);
@@ -127,6 +135,7 @@ function appendAllInitialElements() {
 }
 
 // Вызов функции добавления изначальных элементов
+
 appendAllInitialElements();
 
 /* ФОРМА РЕДАКТИРОВАНИЯ */
