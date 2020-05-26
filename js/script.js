@@ -63,17 +63,17 @@ const configValidation = {
 
 /* handlers etc */
 
-function likeButtonHandler (evt) {
+function likeButtonHandler(evt) {
   evt.target.classList.toggle('element__like_active');
 }
 
-function elementImageHandler (evt) {
+function elementImageHandler(evt) {
   popupImage.src = evt.target.src;
   popupCaption.textContent = evt.target.alt;
   openPopupAddEventListener(popupEnlarge, popupClassMarker);
 }
 
-function deleteElementButtonHandler (evt) {
+function deleteElementButtonHandler(evt) {
   const elementToDelete = evt.target.closest('.element');
   const elementImage = elementToDelete.querySelector('.element__image');
   const elementLike = elementToDelete.querySelector('.element__like');
@@ -83,35 +83,35 @@ function deleteElementButtonHandler (evt) {
   elementToDelete.remove();
 }
 
-function clearValidationErrors (formElement) {
+function clearValidationErrors(formElement) {
   const input = Array.from(formElement.querySelectorAll(configValidation.inputSelector));
-  input.map( item => hideInputError(formElement, item, configValidation.inputErrorClass, configValidation.errorClass));
+  input.map(item => hideInputError(formElement, item, configValidation.inputErrorClass, configValidation.errorClass));
 }
 
-function removeEventListenerFromPopup (evt) {
+function removeEventListenerFromPopup(evt) {
   document.removeEventListener('keyup', closePopupAtEscape);
 }
 
-function closePopupAtEscape (evt) {
+function closePopupAtEscape(evt) {
   if (evt.key === 'Escape') {
     const currentPopup = document.querySelector(`.${popupClassMarker}`);
     const currentForm = currentPopup.querySelector(`${configValidation.formSelector}`)
-     closeAnyPopup(popupClassMarker, currentForm);
+    closeAnyPopup(popupClassMarker, currentForm);
   }
 }
 
-function closeAnyPopup (popupClassMarker,currentForm) {
+function closeAnyPopup(popupClassMarker, currentForm) {
   const popupToClose = document.querySelector(`.${popupClassMarker}`);
-  if(currentForm != null) {clearValidationErrors(currentForm);}
+  if (currentForm != null) { clearValidationErrors(currentForm); }
   removeEventListenerFromPopup();
   if (popupToClose != null) { popupToClose.classList.remove(popupClassMarker); }
 }
 
-function closePopupAtOverlayClick (evt) {
-  if (this === evt.target) {  const currentForm = evt.target.querySelector(configValidation.formSelector);   closeAnyPopup(popupClassMarker,currentForm)}
+function closePopupAtOverlayClick(evt) {
+  if (this === evt.target) { const currentForm = evt.target.querySelector(configValidation.formSelector); closeAnyPopup(popupClassMarker, currentForm) }
 }
 
-function prepareNewElement (name, url) {
+function prepareNewElement(name, url) {
   const element = elementTemplate.cloneNode(true);
   const elementImage = element.querySelector('.element__image');
   const deleteButton = element.querySelector('.element__delete-button');
@@ -126,11 +126,11 @@ function prepareNewElement (name, url) {
   return element;
 }
 
-function appendInitialElement (name, url, targetElement) {
+function appendInitialElement(name, url, targetElement) {
   targetElement.prepend(prepareNewElement(name, url));
 }
 
-function appendAllInitialElements () {
+function appendAllInitialElements() {
   initialElements.forEach((item, index) => appendInitialElement(initialElements[index].title, initialElements[index].imageLink, elements));
 }
 
@@ -138,47 +138,44 @@ appendAllInitialElements();
 
 /* EDIT FORM */
 
-function formEditHandler (evt) {
+function formEditHandler(evt) {
   evt.preventDefault();
   profileFullName.textContent = popupFullName.value;
   profileVocation.textContent = popupVocation.value;
   closeAnyPopup(popupClassMarker);
 }
 
-function openPopupAddEventListener (popup, popupClassMarker) {
+function openPopupAddEventListener(popup, popupClassMarker) {
   document.addEventListener('keyup', closePopupAtEscape);
   popup.classList.add(popupClassMarker);
 }
 
-function editButtonHandler () {
+function editButtonHandler() {
   popupFullName.value = profileFullName.textContent;
   popupVocation.value = profileVocation.textContent;
   openPopupAddEventListener(popupEdit, popupClassMarker);
 }
 
- function closeButtonHandler (evt) {
- const currentForm = document.querySelector(`.${event.target.parentElement.classList[1]}`);
-  // console.log(`.${event.target.parentElement.classList[1]}`)
-   closeAnyPopup(popupClassMarker,currentForm);
+function closeButtonHandler(evt) {
+  const currentForm = document.querySelector(`.${event.target.parentElement.classList[1]}`);
+  closeAnyPopup(popupClassMarker, currentForm);
 }
 
-/* ADD NEW PLACE */
-
-function clearPopupValues () {
+function clearPopupValues() {
   popupName.value = null;
   popupUrl.value = null;
 }
 
-function addButtonHandler () {
+function addButtonHandler() {
   clearPopupValues();
   openPopupAddEventListener(popupAdd, popupClassMarker);
 }
 
-function appendNewElement (popupName, popupUrl, targetElement) {
+function appendNewElement(popupName, popupUrl, targetElement) {
   targetElement.prepend(prepareNewElement(popupName, popupUrl));
 }
 
-function formAddHandler (evt) {
+function formAddHandler(evt) {
   evt.preventDefault();
   appendNewElement(popupName.value, popupUrl.value, elements);
   closeAnyPopup(popupClassMarker);
