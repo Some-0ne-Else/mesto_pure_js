@@ -18,7 +18,7 @@
   justify-content: center;
   align-items: center;
   display: flex;
-  visibility: hidden;
+  visibility: hidd
   opacity: 0;
   transition: opacity 0.4s ease-in-out;
   -webkit-transition: opacity 0.4s ease-in-out;
