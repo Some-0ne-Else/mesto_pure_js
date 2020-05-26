@@ -187,3 +187,4 @@ popupAllCloseButtons.forEach(item => item.addEventListener('click', closeButtonH
 popupAddForm.addEventListener('submit', formAddHandler);
 popupEditForm.addEventListener('submit', formEditHandler);
 allPopup.forEach((item) => item.addEventListener('mousedown', closePopupAtOverlayClick));
+
