@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 const initialElements = [
   {
     title: 'Сибуя',
@@ -143,8 +141,6 @@ function appendAllInitialElements() {
 
 appendAllInitialElements();
 
-/* EDIT FORM */
-
 function formEditHandler(evt) {
   evt.preventDefault();
   profileFullName.textContent = popupFullName.value;
@@ -189,5 +185,3 @@ popupAllCloseButtons.forEach(item => item.addEventListener('click', closeButtonH
 popupAddForm.addEventListener('submit', formAddHandler);
 popupEditForm.addEventListener('submit', formEditHandler);
 allPopup.forEach((item) => item.addEventListener('mousedown', closePopupAtOverlayClick));
-
->>>>>>> final-fixes
