@@ -18,7 +18,9 @@
   justify-content: center;
   align-items: center;
   display: flex;
-  visibility: hidden;
+  visibility: hidd
   opacity: 0;
-  transition: visibility 0.5s linear, opacity 0.5s ease-in-out;
+  transition: opacity 0.4s ease-in-out;
+  -webkit-transition: opacity 0.4s ease-in-out;
+  -moz-transition: opacity 0.4s ease-in-out;
 }

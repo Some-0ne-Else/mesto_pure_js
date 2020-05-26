@@ -9,6 +9,7 @@
   background-repeat: no-repeat;
   background-position: center;
   transition: opacity ease 0.5s;
+  outline: none;
 }
 
 .element__like:hover{

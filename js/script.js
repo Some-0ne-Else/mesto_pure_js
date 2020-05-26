@@ -1,66 +1,59 @@
+<<<<<<< HEAD
+=======
 const initialElements = [
   {
     title: 'Сибуя',
-    imageLink: './images/element__image_sibuya.jpg',
-    id: 1,
+    imageLink: './images/element__image_sibuya.jpg'
   },
   {
     title: 'Прага',
-    imageLink: './images/element__image_praga.jpg',
-    id: 2,
+    imageLink: './images/element__image_praga.jpg'
   },
   {
     title: 'Иордания',
-    imageLink: './images/element__image_iordaniya.jpg',
-    id: 3,
+    imageLink: './images/element__image_iordaniya.jpg'
   },
   {
     title: 'Швейцария',
-    imageLink: './images/element__image_switzerland.jpg',
-    id: 4,
+    imageLink: './images/element__image_switzerland.jpg'
   },
   {
     title: 'Греция',
-    imageLink: './images/element__image_greece.jpg',
-    id: 5,
+    imageLink: './images/element__image_greece.jpg'
   },
   {
     title: 'Черногория',
-    imageLink: './images/element__image_montenegro.jpg',
-    id: 6,
+    imageLink: './images/element__image_montenegro.jpg'
   }
 ];
 
-
-/* Алексей, спасибо за Ваши замечания, прямо скажу был занят другим дедлайном по другому pro bono проекту "Раклечится", поэтому фиксы были достаточно поверхностные, сейчас сделал с большей проработкой деталей*/
-
-
-/*константы для рендеринга */
-const elements = document.querySelector('.elements'); //цель для вставки новых элементов на страницу
+/* rendering const */
+const elements = document.querySelector('.elements'); // target for inserting new elements
 const elementTemplate = document.querySelector('.element__template').content;
 
-/*константы элементов страницы */
-const editButton = document.querySelector(".profile__edit-button");
-const addButton = document.querySelector(".profile__add-button");
-const profileFullName = document.querySelector(".profile__full-name");
-const profileVocation = document.querySelector(".profile__vocation");
+/* page elements const */
+const editButton = document.querySelector('.profile__edit-button');
+const addButton = document.querySelector('.profile__add-button');
+const profileFullName = document.querySelector('.profile__full-name');
+const profileVocation = document.querySelector('.profile__vocation');
 
-/* константы попапов*/
-const popupEdit = document.querySelector(".popup_edit");
-const popupEditForm = document.querySelector(".popup__container_edit");
-const allCloseButtons = document.querySelectorAll(".popup__close-button");
-const popupAdd = document.querySelector(".popup_add");
-const popupAddForm = document.querySelector(".popup__container_add");
-const popupEnlarge = document.querySelector(".popup-enlarge");
-const popupImage = document.querySelector(".popup__image");
-const popupCaption = document.querySelector(".popup__caption");
-const popupFullName = document.querySelector("#full-name");
-const popupVocation = document.querySelector("#vocation");
-const popupName = document.querySelector("#name");
-const popupUrl = document.querySelector("#url");
+/* popup const */
+const popupEdit = document.querySelector('.popup_edit');
+const popupEditForm = document.querySelector('.popup__container_edit');
+const popupAdd = document.querySelector('.popup_add');
+const popupAddForm = popupAdd.querySelector('.popup__container_add');
+const popupAllCloseButtons = document.querySelectorAll('.popup__close-button');
+const popupEnlarge = document.querySelector('.popup-enlarge');
+const popupImage = document.querySelector('.popup__image');
+const allPopup = document.querySelectorAll('.popup');
+const popupCaption = document.querySelector('.popup__caption');
+const popupFullName = document.querySelector('#full-name');
+const popupVocation = document.querySelector('#vocation');
+const popupName = document.querySelector('#name');
+const popupUrl = document.querySelector('#url');
 
-/* зачатки конфига */
-const popupClassMarker = "popup_opened";
+/* config */
+const popupClassMarker = 'popup_opened';
 const configValidation = {
   formSelector: '.popup__container',
   inputSelector: '.popup__input',
@@ -70,77 +63,88 @@ const configValidation = {
   errorClass: 'popup__input-error_active'
 };
 
-/* Как чувстовал что скрипач не нужен, поэтому uid сделал отдельным бранчем */
-const allInputsErrors = document.querySelectorAll(`.${configValidation.errorClass}`.match(/\D+\_{2,2}[a-z-]+/))
-const allPopup = document.querySelectorAll(".popup");
-// функция очищающая вывод ошибок при закрыти попапов
-function clearValidationErrors() {
-  allInputsErrors.forEach((item) => item.textContent = "")
-  const allInputs = document.querySelectorAll(`.${configValidation.inputErrorClass}`);
-  allInputs.forEach((item) => item.classList.remove(configValidation.inputErrorClass));
-}
-//Фунция закрытия попапа
-function closeAnyPopup(popupClassMarker) {
-  const popupToClose = document.querySelector(`.${popupClassMarker}`);
-  clearValidationErrors();
-  removeEvLisFromPopup();
-  if(popupToClose != null){popupToClose.classList.remove(popupClassMarker)} /* избавимся от ошибок в консоли возникающих из-за щелчков ЛКМ во время анимации */
+/* handlers etc */
+function deleteElementButtonHandler(evt) {
+  const elementToDelete = evt.target.closest('.element');
+  const elementImage = elementToDelete.querySelector('.element__image');
+  const elementLike = elementToDelete.querySelector('.element__like');
+  elementImage.removeEventListener('click', elementImageHandler);
+  elementLike.removeEventListener('click', likeButtonHandler);
+  evt.target.removeEventListener('click', deleteElementButtonHandler);
+  elementToDelete.remove();
 }
 
-//функция закрытия попапов по нажатию на Esc
-function closePopupAtEscape(evt) {
-  if (evt.key === 'Escape') {
-    closeAnyPopup(popupClassMarker);
-  }
-};
-
-// функция закрытия попапа по клику на оверлее
-function closePopupAtOverlayClick(evt) {
-  if (this === evt.target) { closeButtonHandler(); }
+function clearValidationErrors(formElement) {
+  const allFormInputs = Array.from(formElement.querySelectorAll(configValidation.inputSelector));
+  allFormInputs.map(input => hideInputError(formElement, input, configValidation.inputErrorClass, configValidation.errorClass));
 }
 
-//Функция снятия слушателей
-function removeEvLisFromPopup(evt) {
+function removeEventListenerFromPopup(evt) {
   document.removeEventListener('keyup', closePopupAtEscape);
 }
 
-/* РЕНДЕРИНГ ИЗНАЧАЛЬНОГО СОСТОЯНИЯ (ДАННЫЕ ИЗ МАССИВА) */
+function closeAnyPopup(popupClassMarker, currentForm) {
+  const popupToClose = document.querySelector(`.${popupClassMarker}`);
+  if (currentForm != null) { clearValidationErrors(currentForm); }
+  removeEventListenerFromPopup();
+  if (popupToClose != null) { popupToClose.classList.remove(popupClassMarker); }
+}
 
-// функция подготовки к вставке одного элемента
-function prepareInitialElement(item) {
+function closePopupAtEscape(evt) {
+  if (evt.key === 'Escape') {
+    const currentPopup = document.querySelector(`.${popupClassMarker}`);
+    const currentForm = currentPopup.querySelector(`${configValidation.formSelector}`)
+    closeAnyPopup(popupClassMarker, currentForm);
+  }
+}
+
+function openPopupAddEventListener(popup, popupClassMarker) {
+  document.addEventListener('keyup', closePopupAtEscape);
+  popup.classList.add(popupClassMarker);
+}
+function likeButtonHandler(evt) {
+  evt.target.classList.toggle('element__like_active');
+}
+
+function elementImageHandler(evt) {
+  popupImage.src = evt.target.src;
+  popupCaption.textContent = evt.target.alt;
+  openPopupAddEventListener(popupEnlarge, popupClassMarker);
+}
+function closePopupAtOverlayClick(evt) {
+  if (this === evt.target) {
+    const currentForm = evt.target.querySelector(configValidation.formSelector);
+    closeAnyPopup(popupClassMarker, currentForm)
+  }
+}
+
+function prepareNewElement(name, url) {
   const element = elementTemplate.cloneNode(true);
-  const elementWrapper = element.querySelector('.element');
   const elementImage = element.querySelector('.element__image');
-  const deleteButton = element.querySelector(".element__delete-button");
-  const elementLike = element.querySelector(".element__like");
+  const deleteButton = element.querySelector('.element__delete-button');
+  const elementLike = element.querySelector('.element__like');
   const elementTitle = element.querySelector('.element__title');
-  // наполняем содержимым
-  elementImage.src = item.imageLink;
-  elementWrapper.setAttribute('id', item.id);
-  elementTitle.textContent = item.title;
-  elementImage.alt = elementTitle.textContent; //alt будет содержать значение заголовка элемента (карточки)
+  elementTitle.textContent = name;
+  elementImage.src = url;
+  elementImage.alt = elementTitle.textContent;
   deleteButton.addEventListener('click', deleteElementButtonHandler);
-  elementLike.addEventListener("click", likeButtonHandler);
-  elementImage.addEventListener("click", elementImageHandler);
+  elementLike.addEventListener('click', likeButtonHandler);
+  elementImage.addEventListener('click', elementImageHandler);
   return element;
 }
-//функция непосредственного добавления одного элемента на страницу принимает пар1 элемент пар2 цель вставки
-function appendInitialElement(element, targetElement) {
-  targetElement.prepend(prepareInitialElement(element));  // отображаем на странице
+
+function appendInitialElement(name, url, targetElement) {
+  targetElement.prepend(prepareNewElement(name, url));
 }
 
-//функция добавления изначальных элементов на страницу принимает пар1 элемент пар2 куда вставляем
 function appendAllInitialElements() {
-  initialElements.forEach(element => appendInitialElement(element, elements));
+  initialElements.forEach((item, index) => appendInitialElement(initialElements[index].title, initialElements[index].imageLink, elements));
 }
-
-// Вызов функции добавления изначальных элементов
 
 appendAllInitialElements();
 
-/* ФОРМА РЕДАКТИРОВАНИЯ */
+/* EDIT FORM */
 
-//функция обработчик формы редактирования
 function formEditHandler(evt) {
   evt.preventDefault();
   profileFullName.textContent = popupFullName.value;
@@ -148,91 +152,42 @@ function formEditHandler(evt) {
   closeAnyPopup(popupClassMarker);
 }
 
-/*функция открытия попап и добавления слушателей для закрытия */
-function openPopupAddEl(popup, popupClassMarker){
-  document.addEventListener('keyup', closePopupAtEscape);
-  popup.classList.add(popupClassMarker);
-}
-
-//функция обработки нажатия на кнопку редактировать
 function editButtonHandler() {
   popupFullName.value = profileFullName.textContent;
   popupVocation.value = profileVocation.textContent;
-  openPopupAddEl(popupEdit,popupClassMarker);
+  openPopupAddEventListener(popupEdit, popupClassMarker);
 }
 
-//функция обработки нажатия на кнопку закрытия попапа
 function closeButtonHandler(evt) {
-  closeAnyPopup(popupClassMarker);
+  const currentForm = document.querySelector(`.${event.target.parentElement.classList[1]}`);
+  closeAnyPopup(popupClassMarker, currentForm);
 }
 
-/* ФОРМА ДОБАВЛЕНИЯ */
-
-// функция очистки значений popup
-function cleanPopupValues() {
+function clearPopupValues() {
   popupName.value = null;
   popupUrl.value = null;
 }
 
-//функция обработки нажатия на кнопку добавить
 function addButtonHandler() {
-  cleanPopupValues();
-  openPopupAddEl(popupAdd,popupClassMarker);
+  clearPopupValues();
+  openPopupAddEventListener(popupAdd, popupClassMarker);
 }
 
-// функция подготовки к вставке нового элемента
-function prepareNewElement() {
-  const element = elementTemplate.cloneNode(true);
-  const elementImage = element.querySelector('.element__image');
-  const deleteButton = element.querySelector(".element__delete-button");
-  const elementLike = element.querySelector(".element__like")
-  const elementTitle = element.querySelector('.element__title')
-  elementImage.src = popupUrl.value
-  elementTitle.textContent = popupName.value
-  elementImage.alt = elementTitle.textContent; //alt будет содержать значение заголовка элемента (карточки)
-  deleteButton.addEventListener('click', deleteElementButtonHandler);
-  elementLike.addEventListener("click", likeButtonHandler);
-  elementImage.addEventListener("click", elementImageHandler);
-  return element;
+function appendNewElement(popupName, popupUrl, targetElement) {
+  targetElement.prepend(prepareNewElement(popupName, popupUrl));
 }
 
-// Добавление нового элемента без задействия массива изначальных элементов
-function appendNewElement(newElement, targetElement) {
-  targetElement.prepend(prepareNewElement(newElement));  // отображаем на странице
-}
-//функция обработчик формы добавления
 function formAddHandler(evt) {
   evt.preventDefault();
-  appendNewElement(prepareNewElement(), elements)
+  appendNewElement(popupName.value, popupUrl.value, elements);
   closeAnyPopup(popupClassMarker);
 }
 
-/* УВЕЛИЧЕНИЕ */
-
-//функции обработчики событий
-function likeButtonHandler(evt) {
-  evt.target.classList.toggle("element__like_active");
-};
-
-//функция открытия попапа при клике на изображение
-function elementImageHandler(evt) {
-  popupImage.src = evt.target.src;
-  popupCaption.textContent = evt.target.alt;
-  openPopupAddEl(popupEnlarge,popupClassMarker);
-};
-
-function deleteElementButtonHandler(evt) {
-  const elementToDelete = evt.target.closest('.element');
-  elementToDelete.remove();
-  evt.target.removeEventListener("click", elementImageHandler);
-  evt.target.removeEventListener("click", likeButtonHandler);
-  evt.target.removeEventListener('click', deleteElementButtonHandler);
-};
-
-//ждуны слушатели
-editButton.addEventListener("click", editButtonHandler);
-allCloseButtons.forEach((item) => { item.addEventListener("click", closeButtonHandler) });
-addButton.addEventListener("click", addButtonHandler);
-popupAddForm.addEventListener("submit", formAddHandler);
-popupEditForm.addEventListener("submit", formEditHandler);
+editButton.addEventListener('click', editButtonHandler);
+addButton.addEventListener('click', addButtonHandler);
+popupAllCloseButtons.forEach(item => item.addEventListener('click', closeButtonHandler));
+popupAddForm.addEventListener('submit', formAddHandler);
+popupEditForm.addEventListener('submit', formEditHandler);
 allPopup.forEach((item) => item.addEventListener('mousedown', closePopupAtOverlayClick));
+
+>>>>>>> final-fixes
