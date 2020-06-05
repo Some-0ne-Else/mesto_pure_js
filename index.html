@@ -27,20 +27,19 @@
     <footer class="footer">
       <p class="footer__copyright">© 2020 Mesto Russia</p>
     </footer>
-    <section class="popup-edit-profile">
-      <div class="popup-edit-profile"></div>
-        <form class="popup-edit-profile__container">
-          <h2 class="popup-edit-profile__heading">Редактировать профиль</h2>
-          <button type="button" class="popup-edit-profile__close-button"></button><!-- добавлено отсечение имен из одних пробелов и дефисов, а так же висячих дефисов-->
-          <input type="text" class="popup-edit-profile__input" name="fullname" id="full-name" placeholder="Имя полностью" minlength="2" maxlength="40"  pattern="[a-zA-ZА-ЯЁа-яё\s\-]+[^\s\-]+" required novalidate>
-          <p class="popup-edit-profile__input-error" id="full-name-error"></p>
-          <input type="text" class="popup-edit-profile__input" name="vocation" id="vocation" placeholder="Призвание" minlength="2" maxlength="200"  required novalidate>
-          <p class="popup-edit-profile__input-error" id="vocation-error"></p>
-          <button type="submit" class="popup-edit-profile__action-button">Сохранить</button>
+    <section class="popup popup_edit">
+        <form class="popup__container popup__container_edit">
+          <h2 class="popup__heading">Редактировать профиль</h2>
+          <button type="button" class="popup__close-button"></button><!-- добавлено отсечение имен из одних пробелов и дефисов, а так же висячих дефисов-->
+          <input type="text" class="popup__input" name="fullname" id="full-name" placeholder="Имя полностью" minlength="2" maxlength="40"  pattern="[a-zA-ZА-ЯЁа-яё\s\-]+[^\s\-]+" required novalidate>
+          <p class="popup__input-error" id="full-name-error"></p>
+          <input type="text" class="popup__input" name="vocation" id="vocation" placeholder="Призвание" minlength="2" maxlength="200"  required novalidate>
+          <p class="popup__input-error" id="vocation-error"></p>
+          <button type="submit" class="popup__action-button popup__action-button_edit">Сохранить</button>
         </form>
     </section>
-    <section class="popup">
-      <form class="popup__container">
+    <section class="popup popup_add">
+      <form class="popup__container popup__container_add">
         <h2 class="popup__heading">Новое место</h2>
         <button type="button" class="popup__close-button"></button> <!-- добавлено отсечение имен из одних пробелов и дефисов, а так же висячих дефисов-->
         <input type="text" class="popup__input" name="name" id="name" placeholder="Название" minlength="2" maxlength="30" pattern="[a-zA-ZА-ЯЁа-яё\s\-]+[^\s\-]+" required novalidate>
@@ -50,10 +49,10 @@
         <button type="submit" class="popup__action-button">Создать</button>
       </form>
   </section>
-    <section class="popup-enlarged">
-      <div class="popup-enlarged__container">
-      <img class="popup-enlarged__image"> <button type="button" class="popup-enlarged__close-button"></button>
-      <p class="popup-enlarged__caption"></p>
+    <section class="popup popup-enlarge">
+      <div class="popup__container-enl">
+      <img class="popup__image"> <button type="button" class="popup__close-button"></button>
+      <p class="popup__caption"></p>
     </div>
     </section>
     <template class="element__template">
@@ -65,8 +64,9 @@
       </div>
     </template>
   </div>
-  <script src="./js/script.js"></script>
-  <script src="./js/validate.js"></script>
+  <script type="module" src="./js/index.js"></script>
+  <script type="module" src="./js/Card.js"></script>
+  <script type="module" src="./js/FormValidator.js"></script>
   </body>
 
   </html>
