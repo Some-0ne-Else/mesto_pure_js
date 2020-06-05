@@ -102,6 +102,7 @@ function appendElement(name, url, targetElement) {
   targetElement.prepend(cardElement);
 }
 
+
 function appendInitialElements () {
   initialElements.forEach((item) => {
     // Creating instance of Card class
@@ -112,6 +113,7 @@ function appendInitialElements () {
   });
   }
   appendInitialElements();
+
 
 function formEditHandler(evt) {
   evt.preventDefault();
