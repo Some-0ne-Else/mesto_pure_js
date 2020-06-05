@@ -1,6 +1,5 @@
 import Card from '../js/Card.js';
 import FormValidator from '../js/FormValidator.js'
-import hideInputError from '../js/validate.js'; // используем как времнное решение до продолжения рефакторинга в след спринте (т.к. публичный метод у класса должен быть только один)
 
 const initialElements = [
   {
@@ -52,7 +51,7 @@ const popupUrl = document.querySelector('#url');
 const popupClassMarker = 'popup_opened';
 const cardTemplate = '.element__template'
 const elements = document.querySelector('.elements'); // target for inserting new instances of Card
-const configValidation = {
+const configValidation = { //old config
   formSelector: '.popup__container',
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__action-button',
@@ -62,11 +61,13 @@ const configValidation = {
 };
 
 /* handlers etc */
+
+/* legacy code
 function clearValidationErrors(formElement) {
   const allFormInputs = Array.from(formElement.querySelectorAll(configValidation.inputSelector));
   allFormInputs.map(input => hideInputError(formElement, input, configValidation.inputErrorClass, configValidation.errorClass));
 }
-
+*/
 function removeEventListenerFromPopup(evt) {
   document.removeEventListener('keyup', closePopupAtEscape);
 }
@@ -120,7 +121,7 @@ function formEditHandler(evt) {
 }
 
 function editButtonHandler() {
-  clearValidationErrors(popupEditForm);
+  //clearValidationErrors(popupEditForm);
   popupFullName.value = profileFullName.textContent;
   popupVocation.value = profileVocation.textContent;
   openPopupAddEventListener(popupEdit, popupClassMarker);
@@ -136,7 +137,7 @@ function clearPopupValues() {
 }
 
 function addButtonHandler() {
-  clearValidationErrors(popupAddForm);
+ // clearValidationErrors(popupAddForm);
   clearPopupValues();
   openPopupAddEventListener(popupAdd, popupClassMarker);
 }
