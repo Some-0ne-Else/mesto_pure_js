@@ -1,39 +1,39 @@
-export default class Card{
-  constructor(title, url, templateSelector){
+export default class Card {
+  constructor(title, url, templateSelector) {
     this._title = title;
     this._url = url;
     this._templateSelector = templateSelector;
   }
   _getTemplate() {
     const cardElement = document
-    .querySelector(this._templateSelector)
-    .content.querySelector('.element')
-    .cloneNode(true);
+      .querySelector(this._templateSelector)
+      .content.querySelector('.element')
+      .cloneNode(true);
     return cardElement;
-}
- generateCard() {
-  // Запишем разметку в приватное поле _element.
-  // Так у других элементов появится доступ к ней.
-  this._element = this._getTemplate();
-  const elementImage = this._element.querySelector('.element__image');
-  const elementTitle = this._element.querySelector('.element__title');
+  }
+  generateCard() {
+    // Запишем разметку в приватное поле _element.
+    // Так у других элементов появится доступ к ней.
+    this._element = this._getTemplate();
+    const elementImage = this._element.querySelector('.element__image');
+    const elementTitle = this._element.querySelector('.element__title');
 
-  elementImage.src = this._url;
-  elementTitle.textContent = this._title;
-  elementImage.alt = this._title;
+    elementImage.src = this._url;
+    elementTitle.textContent = this._title;
+    elementImage.alt = this._title;
 
-  /*selectors for Listeners */
-  const deleteButton = this._element.querySelector('.element__delete-button');
-  const elementLike = this._element.querySelector('.element__like');
-  /* adding handlers */
-  deleteButton.addEventListener('click', this._deleteElementHandler);
-  elementLike.addEventListener('click', this._likeButtonHandler);
-  elementImage.addEventListener('click', this._elementImageHandler);
+    /*selectors for Listeners */
+    const deleteButton = this._element.querySelector('.element__delete-button');
+    const elementLike = this._element.querySelector('.element__like');
+    /* adding handlers */
+    deleteButton.addEventListener('click', this._deleteElementHandler);
+    elementLike.addEventListener('click', this._likeButtonHandler);
+    elementImage.addEventListener('click', this._elementImageHandler);
 
-  // Вернём элемент наружу
-  return this._element;
-}
-    _elementImageHandler(evt) {
+    // Вернём элемент наружу
+    return this._element;
+  }
+  _elementImageHandler(evt) {
     const popupImage = document.querySelector('.popup__image');
     popupImage.src = evt.target.src;
     const popupCaption = document.querySelector('.popup__caption');
@@ -42,8 +42,10 @@ export default class Card{
     const popupEnlarge = document.querySelector('.popup-enlarge');
     document.addEventListener('keyup', (evt) => {
       if (evt.key === 'Escape') {
-    const popupToClose = document.querySelector('.popup_opened');
-   if (popupToClose != null)  popupToClose.classList.remove('popup_opened');  }});
+        const popupToClose = document.querySelector('.popup_opened');
+        if (popupToClose != null) popupToClose.classList.remove('popup_opened');
+      }
+    });
     popupEnlarge.classList.add('popup_opened');
   }
 

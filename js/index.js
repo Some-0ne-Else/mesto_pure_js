@@ -1,5 +1,5 @@
-import Card from '../js/Card.js';
-import FormValidator from '../js/FormValidator.js'
+import Card from './Card.js';
+import FormValidator from './FormValidator.js'
 
 const initialElements = [
   {
@@ -49,9 +49,9 @@ const popupUrl = document.querySelector('#url');
 
 /* config */
 const popupClassMarker = 'popup_opened';
-const cardTemplate = '.element__template'
 const elements = document.querySelector('.elements'); // target for inserting new instances of Card
-const configValidation = { //old config
+
+const configValidation = {
   formSelector: '.popup__container',
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__action-button',
@@ -59,15 +59,16 @@ const configValidation = { //old config
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__input-error_active'
 };
-
+const editForm = new FormValidator(configValidation, ".popup__container_edit");
+const addForm = new FormValidator(configValidation, ".popup__container_add");
 /* handlers etc */
 
-/* legacy code
-function clearValidationErrors(formElement) {
+/* In case of using this method we should make it public */
+function clearValidationErrors(formElement,formInstance) {
   const allFormInputs = Array.from(formElement.querySelectorAll(configValidation.inputSelector));
-  allFormInputs.map(input => hideInputError(formElement, input, configValidation.inputErrorClass, configValidation.errorClass));
+  allFormInputs.map(input => formInstance.hideInputError(formElement, input, configValidation.inputErrorClass, configValidation.errorClass));
 }
-*/
+
 function removeEventListenerFromPopup(evt) {
   document.removeEventListener('keyup', closePopupAtEscape);
 }
@@ -75,7 +76,7 @@ function removeEventListenerFromPopup(evt) {
 function closeAnyPopup(popupClassMarker, currentForm) {
   const popupToClose = document.querySelector(`.${popupClassMarker}`);
   removeEventListenerFromPopup();
- if (popupToClose != null)  popupToClose.classList.remove(popupClassMarker);
+  if (popupToClose != null) popupToClose.classList.remove(popupClassMarker);
 }
 
 function closePopupAtEscape(evt) {
@@ -97,22 +98,22 @@ function closePopupAtOverlayClick(evt) {
 }
 
 function appendElement(name, url, targetElement) {
-  const card = new Card(name,url,'.element__template')
+  const card = new Card(name, url, '.element__template')
   const cardElement = card.generateCard();
   targetElement.prepend(cardElement);
 }
 
 
-function appendInitialElements () {
+function appendInitialElements() {
   initialElements.forEach((item) => {
     // Creating instance of Card class
-    const card = new Card(item.title, item.url,'.element__template');
+    const card = new Card(item.title, item.url, '.element__template');
     // Filling instance with data and adding to DOM
     const cardElement = card.generateCard();
     elements.prepend(cardElement);
   });
-  }
-  appendInitialElements();
+}
+appendInitialElements();
 
 
 function formEditHandler(evt) {
@@ -123,7 +124,7 @@ function formEditHandler(evt) {
 }
 
 function editButtonHandler() {
-  //clearValidationErrors(popupEditForm);
+  clearValidationErrors(popupEditForm,editForm);
   popupFullName.value = profileFullName.textContent;
   popupVocation.value = profileVocation.textContent;
   openPopupAddEventListener(popupEdit, popupClassMarker);
@@ -139,7 +140,7 @@ function clearPopupValues() {
 }
 
 function addButtonHandler() {
- // clearValidationErrors(popupAddForm);
+  clearValidationErrors(popupAddForm,addForm);
   clearPopupValues();
   openPopupAddEventListener(popupAdd, popupClassMarker);
 }
@@ -158,7 +159,6 @@ popupEditForm.addEventListener('submit', formEditHandler);
 allPopup.forEach((item) => item.addEventListener('mousedown', closePopupAtOverlayClick));
 
 //пока вручную, для каждой формы согласно заданию
-const editForm = new FormValidator(configValidation,".popup__container_edit");
-const addForm = new FormValidator(configValidation,".popup__container_add");
+
 editForm.enableValidation();
 addForm.enableValidation();
