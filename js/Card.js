@@ -22,7 +22,7 @@ export default class Card {
     elementTitle.textContent = this._title;
     elementImage.alt = this._title;
 
-    /*selectors for Listeners */
+    /*selectors for listeners */
     const deleteButton = this._element.querySelector('.element__delete-button');
     const elementLike = this._element.querySelector('.element__like');
     /* adding handlers */

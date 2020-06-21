@@ -1,5 +1,6 @@
 import Card from './Card.js';
-import FormValidator from './FormValidator.js'
+import FormValidator from './FormValidator.js';
+import Section from './Section.js';
 
 const initialElements = [
   {
@@ -103,17 +104,14 @@ function appendElement(name, url, targetElement) {
   targetElement.prepend(cardElement);
 }
 
+const sectionInstance = new Section({
+  items: initialElements,
+  renderer: () => {console.log("renderer func")}
+},
+'.elements');
 
-function appendInitialElements() {
-  initialElements.forEach((item) => {
-    // Creating instance of Card class
-    const card = new Card(item.title, item.url, '.element__template');
-    // Filling instance with data and adding to DOM
-    const cardElement = card.generateCard();
-    elements.prepend(cardElement);
-  });
-}
-appendInitialElements();
+sectionInstance.renderItems();
+
 
 
 function formEditHandler(evt) {
