@@ -30,7 +30,7 @@ export default class Card {
     elementLike.addEventListener('click', this._likeButtonHandler);
     elementImage.addEventListener('click', this._elementImageHandler);
 
-    // Вернём элемент наружу
+    // retun element outside
     return this._element;
   }
   _elementImageHandler(evt) {
@@ -38,6 +38,7 @@ export default class Card {
     popupImage.src = evt.target.src;
     const popupCaption = document.querySelector('.popup__caption');
     popupCaption.textContent = evt.target.alt;
+
 
     const popupEnlarge = document.querySelector('.popup-enlarge');
     document.addEventListener('keyup', (evt) => {

@@ -1,7 +1,13 @@
-import Card from './Card.js';
-import FormValidator from './FormValidator.js';
-import Section from './Section.js';
-import Popup from './Popup.js';
+import Card from '../components/Card.js';
+import FormValidator from '../components/FormValidator.js';
+import Section from '../components/Section.js';
+import Popup from '../components/Popup.js';
+import PopupWithImage from '../components/PopupWithImage.js';
+import PopupWithForm from '../components/PopupWithForm.js';
+
+//const imagePopup = new PopupWithImage(".popup-enlarge");
+//imagePopup.open();
+
 
 const initialElements = [
   {
@@ -37,17 +43,20 @@ const profileFullName = document.querySelector('.profile__full-name');
 const profileVocation = document.querySelector('.profile__vocation');
 
 /* popup const */
-const popupEdit = document.querySelector('.popup_edit');
 const popupEditForm = document.querySelector('.popup__container_edit');
 const popupAdd = document.querySelector('.popup_add');
 const popupAddForm = popupAdd.querySelector('.popup__container_add');
-const popupAllCloseButtons = document.querySelectorAll('.popup__close-button');
 
 const allPopup = document.querySelectorAll('.popup');
 const popupFullName = document.querySelector('#full-name');
 const popupVocation = document.querySelector('#vocation');
 const popupName = document.querySelector('#name');
 const popupUrl = document.querySelector('#url');
+
+/* making instances of clases */
+const universalPopupInstance = new Popup('.popup'); //used for general logic of handeling popups
+const editPopupInstance = new PopupWithForm('.popup_edit');
+const addPopupInstance = new Popup('.popup_add');
 
 /* config */
 const popupClassMarker = 'popup_opened';
@@ -63,7 +72,6 @@ const configValidation = {
 };
 const editForm = new FormValidator(configValidation, ".popup__container_edit");
 const addForm = new FormValidator(configValidation, ".popup__container_add");
-/* handlers etc */
 
 /* In case of using this method we should make it public */
 function clearValidationErrors(formElement, formInstance) {
@@ -75,36 +83,37 @@ function removeEventListenerFromPopup(evt) {
   document.removeEventListener('keyup', closePopupAtEscape);
 }
 
-function closeAnyPopup(popupClassMarker, currentForm) {
+/* old close popup */
+function closeAnyPopup(popupClassMarker) {
   const popupToClose = document.querySelector(`.${popupClassMarker}`);
-  removeEventListenerFromPopup();
+  //removeEventListenerFromPopup();
   if (popupToClose != null) popupToClose.classList.remove(popupClassMarker);
 }
 
-function closePopupAtEscape(evt) {
-  if (evt.key === 'Escape') {
-    closeAnyPopup(popupClassMarker);
-  }
+function addEscClose() {
+  document.addEventListener('keyup', escClose);
 }
 
-function openPopupAddEventListener(popup, popupClassMarker) {
-  document.addEventListener('keyup', closePopupAtEscape);
-  popup.classList.add(popupClassMarker);
+function escClose(evt) {
+  universalPopupInstance._handleEscClose(evt);
 }
 
 function closePopupAtOverlayClick(evt) {
   if (this === evt.target) {
     const currentForm = evt.target.querySelector(configValidation.formSelector);
+    //universalPopupInstance._handleEscClose(evt);
     closeAnyPopup(popupClassMarker, currentForm)
   }
 }
 
+/*need a refactor with clases later */
 function appendElement(name, url, targetElement) {
   const card = new Card(name, url, '.element__template')
   const cardElement = card.generateCard();
   targetElement.prepend(cardElement);
 }
 
+/* creating instance of rendering logic */
 const sectionInstance = new Section({
   items: initialElements,
   renderer: (item) => {
@@ -115,25 +124,30 @@ const sectionInstance = new Section({
 },
   '.elements');
 
+/* rendering initial elements from array */
 sectionInstance.renderItems();
 
 
+/* handler of edit form */
 function formEditHandler(evt) {
   evt.preventDefault();
   profileFullName.textContent = popupFullName.value;
   profileVocation.textContent = popupVocation.value;
-  closeAnyPopup(popupClassMarker);
+closeAnyPopup(popupClassMarker);
 }
+
 
 function editButtonHandler() {
   clearValidationErrors(popupEditForm, editForm);
   popupFullName.value = profileFullName.textContent;
   popupVocation.value = profileVocation.textContent;
-  openPopupAddEventListener(popupEdit, popupClassMarker);
+  editPopupInstance.open();
+  addEscClose();
 }
 
+/* closing any popup by button */
 function closeButtonHandler(evt) {
-  closeAnyPopup(popupClassMarker);
+  universalPopupInstance.close();
 }
 
 function clearPopupValues() {
@@ -144,9 +158,11 @@ function clearPopupValues() {
 function addButtonHandler() {
   clearValidationErrors(popupAddForm, addForm);
   clearPopupValues();
-  openPopupAddEventListener(popupAdd, popupClassMarker);
+  addPopupInstance.open();
+  addEscClose();
 }
 
+/* add form handler */
 function formAddHandler(evt) {
   evt.preventDefault();
   appendElement(popupName.value, popupUrl.value, elements);
@@ -155,12 +171,12 @@ function formAddHandler(evt) {
 
 editButton.addEventListener('click', editButtonHandler);
 addButton.addEventListener('click', addButtonHandler);
-popupAllCloseButtons.forEach(item => item.addEventListener('click', closeButtonHandler));
 popupAddForm.addEventListener('submit', formAddHandler);
 popupEditForm.addEventListener('submit', formEditHandler);
 allPopup.forEach((item) => item.addEventListener('mousedown', closePopupAtOverlayClick));
+editPopupInstance.setEventListeners();
+addPopupInstance.setEventListeners();
 
-//пока вручную, для каждой формы согласно заданию
-
+// enable validation manualy for two forms like a described in brief
 editForm.enableValidation();
 addForm.enableValidation();
