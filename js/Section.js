@@ -7,14 +7,12 @@ export default class Section {
     this._container = document.querySelector(classSelector);
   }
 
-  renderItems() {
-    this._items.forEach((item) => {
-      const card = new Card(item.title, item.url, '.element__template');
-      const cardElement = card.generateCard();
-      this.addItem(cardElement);
-    })
+  renderItems(){
+    this._items.forEach(item => this._renderer(item));
   }
   addItem(element) {
     this._container.prepend(element);
   }
 }
+
+

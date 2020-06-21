@@ -1,6 +1,7 @@
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 import Section from './Section.js';
+import Popup from './Popup.js';
 
 const initialElements = [
   {
@@ -65,7 +66,7 @@ const addForm = new FormValidator(configValidation, ".popup__container_add");
 /* handlers etc */
 
 /* In case of using this method we should make it public */
-function clearValidationErrors(formElement,formInstance) {
+function clearValidationErrors(formElement, formInstance) {
   const allFormInputs = Array.from(formElement.querySelectorAll(configValidation.inputSelector));
   allFormInputs.map(input => formInstance.hideInputError(formElement, input, configValidation.inputErrorClass, configValidation.errorClass));
 }
@@ -106,12 +107,15 @@ function appendElement(name, url, targetElement) {
 
 const sectionInstance = new Section({
   items: initialElements,
-  renderer: () => {console.log("renderer func")}
+  renderer: (item) => {
+    const card = new Card(item.title, item.url, '.element__template');
+    const cardElement = card.generateCard();
+    sectionInstance.addItem(cardElement);
+  }
 },
-'.elements');
+  '.elements');
 
 sectionInstance.renderItems();
-
 
 
 function formEditHandler(evt) {
@@ -122,7 +126,7 @@ function formEditHandler(evt) {
 }
 
 function editButtonHandler() {
-  clearValidationErrors(popupEditForm,editForm);
+  clearValidationErrors(popupEditForm, editForm);
   popupFullName.value = profileFullName.textContent;
   popupVocation.value = profileVocation.textContent;
   openPopupAddEventListener(popupEdit, popupClassMarker);
@@ -138,7 +142,7 @@ function clearPopupValues() {
 }
 
 function addButtonHandler() {
-  clearValidationErrors(popupAddForm,addForm);
+  clearValidationErrors(popupAddForm, addForm);
   clearPopupValues();
   openPopupAddEventListener(popupAdd, popupClassMarker);
 }
