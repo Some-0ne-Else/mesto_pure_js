@@ -1,32 +1,34 @@
-import PopupWithForm from '../components/PopupWithForm.js';
 import FormValidator from '../components/FormValidator.js';
-import Section from '../components/Section.js';
-import Card from '../components/Card.js';
-
+import sibuyaImage from '../images/element__image_sibuya.jpg'
+import pragaImage from '../images/element__image_praga.jpg'
+import iordaniyaImage from '../images/element__image_iordaniya.jpg'
+import switzerlandImage from '../images/element__image_switzerland.jpg'
+import greeceImage from '../images/element__image_greece.jpg'
+import montenegroImage from '../images/element__image_montenegro.jpg'
 const initialElements = [
   {
     title: 'Сибуя',
-    url: './images/element__image_sibuya.jpg'
+    url: sibuyaImage
   },
   {
     title: 'Прага',
-    url: './images/element__image_praga.jpg'
+    url: pragaImage
   },
   {
     title: 'Иордания',
-    url: './images/element__image_iordaniya.jpg'
+    url: iordaniyaImage
   },
   {
     title: 'Швейцария',
-    url: './images/element__image_switzerland.jpg'
+    url: switzerlandImage
   },
   {
     title: 'Греция',
-    url: './images/element__image_greece.jpg'
+    url: greeceImage
   },
   {
     title: 'Черногория',
-    url: './images/element__image_montenegro.jpg'
+    url: montenegroImage
   }
 ];
 /* page elements const */
