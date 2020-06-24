@@ -1,8 +1,9 @@
 import PopupWithImage from '../components/PopupWithImage.js'
 export default class Card {
-  constructor(title, url, templateSelector) {
+  constructor(title, url, handleCardClick, templateSelector) {
     this._title = title;
     this._url = url;
+    this.handleCardClick = handleCardClick;
     this._templateSelector = templateSelector;
   }
   _getTemplate() {
@@ -27,24 +28,10 @@ export default class Card {
     /* adding handlers */
     deleteButton.addEventListener('click', this._deleteElementHandler);
     elementLike.addEventListener('click', this._likeButtonHandler);
-    elementImage.addEventListener('click', this._elementImageHandler);
+    elementImage.addEventListener('click', (evt) => { this.handleCardClick(evt)});
 
-    // retun element outside
+    // return element outside
     return this._element;
-  }
-  _elementImageHandler(evt) {
-    enlargePopupInstance.open(evt);
-    console.log(this)
-
-    /*
-    const popupImage = document.querySelector('.popup__image');
-    popupImage.src = evt.target.src;
-    const popupCaption = document.querySelector('.popup__caption');
-    popupCaption.textContent = evt.target.alt;
-
-    const popupEnlarge = document.querySelector('.popup-enlarge');
-    popupEnlarge.classList.add('popup_opened');
-*/
   }
 
   _likeButtonHandler(evt) {
@@ -53,15 +40,6 @@ export default class Card {
 
   _deleteElementHandler(evt) {
     const elementToDelete = evt.target.closest('.element');
-    const elementImage = elementToDelete.querySelector('.element__image');
-    const elementLike = elementToDelete.querySelector('.element__like');
-    elementImage.removeEventListener('click', this._elementImageHandler);
-    elementLike.removeEventListener('click', this._likeButtonHandler);
-    evt.target.removeEventListener('click', this._deleteElementHandler);
     elementToDelete.remove();
   }
 }
-
-
-const enlargePopupInstance = new PopupWithImage('.popup-enlarge');
-enlargePopupInstance.setEventListeners();

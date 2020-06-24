@@ -17,17 +17,19 @@ import {
   clearValidationErrors,
 } from '../utils/utils.js';
 import Card from '../components/Card.js';
-import FormValidator from '../components/FormValidator.js';
 import Section from '../components/Section.js';
-import Popup from '../components/Popup.js';
+import UserInfo from '../components/UserInfo.js'
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 
-/* creating instance of rendering logic */
+/* creating instances of rendering logic */
+const enlargePopupInstance = new PopupWithImage('.popup-enlarge');
+
+const userData = new UserInfo( {fullname:profileFullName, vocation:profileVocation});
 const cardSection = new Section({
   items: initialElements,
   renderer: (item) => {
-    const card = new Card(item.title, item.url, cardTemplate);
+    const card = new Card(item.title, item.url, enlargePopupInstance.open.bind(enlargePopupInstance), cardTemplate);
     const cardElement = card.generateCard();
     cardSection.addItem(cardElement);
   }
@@ -38,22 +40,18 @@ cardSection.renderItems();
 
 /* making instances of popup clases */
 const editPopupInstance = new PopupWithForm('.popup_edit', (formData) => {
-  profileFullName.textContent = formData.fullname;
-  profileVocation.textContent = formData.vocation;
+  userData.setUserInfo(formData);
 });
 const addPopupInstance = new PopupWithForm('.popup_add', (formData) => {
-  const card = new Card(formData.name, formData.url, cardTemplate)
+  const card = new Card(formData.name, formData.url, enlargePopupInstance.open.bind(enlargePopupInstance), cardTemplate)
   const cardElement = card.generateCard();
   cardSection.addItem(cardElement);
  });
 
-
-
 function editButtonHandler() {
   clearValidationErrors(popupEditForm, editForm);
-  //loading data form page to popup
-  popupFullName.value = profileFullName.textContent;
-  popupVocation.value = profileVocation.textContent;
+  popupFullName.value =  userData.getUserInfo().name
+  popupVocation.value = userData.getUserInfo().vocation
   editPopupInstance.open();
 }
 
@@ -67,7 +65,7 @@ editButton.addEventListener('click', editButtonHandler);
 addButton.addEventListener('click', addButtonHandler);
 editPopupInstance.setEventListeners();
 addPopupInstance.setEventListeners();
-
-// enable validation manualy for two forms like a described in brief
+enlargePopupInstance.setEventListeners();
+// enable validation manualy for two forms like a described in the brief 7
 editForm.enableValidation();
 addForm.enableValidation();
