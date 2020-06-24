@@ -12,8 +12,6 @@ export default class Card {
     return cardElement;
   }
   generateCard() {
-    // Запишем разметку в приватное поле _element.
-    // Так у других элементов появится доступ к ней.
     this._element = this._getTemplate();
     const elementImage = this._element.querySelector('.element__image');
     const elementTitle = this._element.querySelector('.element__title');
@@ -38,7 +36,6 @@ export default class Card {
     popupImage.src = evt.target.src;
     const popupCaption = document.querySelector('.popup__caption');
     popupCaption.textContent = evt.target.alt;
-
 
     const popupEnlarge = document.querySelector('.popup-enlarge');
     document.addEventListener('keyup', (evt) => {

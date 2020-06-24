@@ -2,6 +2,7 @@ import PopupWithForm from '../components/PopupWithForm.js';
 import FormValidator from '../components/FormValidator.js';
 import Section from '../components/Section.js';
 import Card from '../components/Card.js';
+
 const initialElements = [
   {
     title: 'Сибуя',
@@ -44,10 +45,6 @@ const popupVocation = document.querySelector('#vocation');
 const popupName = document.querySelector('#name');
 const popupUrl = document.querySelector('#url');
 
-/* making instances of popup clases */
-const editPopupInstance = new PopupWithForm('.popup_edit');
-const addPopupInstance = new PopupWithForm('.popup_add');
-
 /* config */
 const popupClassMarker = 'popup_opened';
 const elements = document.querySelector('.elements'); // target for inserting new instances of Card
@@ -64,17 +61,6 @@ const configValidation = {
 const editForm = new FormValidator(configValidation, ".popup__container_edit");
 const addForm = new FormValidator(configValidation, ".popup__container_add");
 
-/* creating instance of rendering logic */
-const sectionInstance = new Section({
-  items: initialElements,
-  renderer: (item) => {
-    const card = new Card(item.title, item.url, '.element__template');
-    const cardElement = card.generateCard();
-    sectionInstance.addItem(cardElement);
-  }
-},
-  '.elements');
-
 export {
   initialElements,
   editButton,
@@ -88,12 +74,9 @@ export {
   popupVocation,
   popupName,
   popupUrl,
-  editPopupInstance,
-  addPopupInstance,
   popupClassMarker,
   elements,
   configValidation,
   editForm,
   addForm,
-  sectionInstance,
 };
