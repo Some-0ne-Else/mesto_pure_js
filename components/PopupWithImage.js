@@ -5,8 +5,16 @@ export default class PopupWithImage extends Popup{
    super(popupSelector);
   this._popupSelector = document.querySelector(popupSelector);
  }
+
   open(evt){
- console.log(evt);
+    console.log("work")
+    const popupImage = document.querySelector('.popup__image');
+    popupImage.src = evt.target.src;
+    const popupCaption = document.querySelector('.popup__caption');
+    popupCaption.textContent = evt.target.alt;
+    this._popupSelector.classList.add('popup_opened');
   }
 
 }
+
+

@@ -1,3 +1,4 @@
+import PopupWithImage from '../components/PopupWithImage.js'
 export default class Card {
   constructor(title, url, templateSelector) {
     this._title = title;
@@ -32,19 +33,18 @@ export default class Card {
     return this._element;
   }
   _elementImageHandler(evt) {
+    enlargePopupInstance.open(evt);
+    console.log(this)
+
+    /*
     const popupImage = document.querySelector('.popup__image');
     popupImage.src = evt.target.src;
     const popupCaption = document.querySelector('.popup__caption');
     popupCaption.textContent = evt.target.alt;
 
     const popupEnlarge = document.querySelector('.popup-enlarge');
-    document.addEventListener('keyup', (evt) => {
-      if (evt.key === 'Escape') {
-        const popupToClose = document.querySelector('.popup_opened');
-        if (popupToClose != null) popupToClose.classList.remove('popup_opened');
-      }
-    });
     popupEnlarge.classList.add('popup_opened');
+*/
   }
 
   _likeButtonHandler(evt) {
@@ -62,3 +62,6 @@ export default class Card {
   }
 }
 
+
+const enlargePopupInstance = new PopupWithImage('.popup-enlarge');
+enlargePopupInstance.setEventListeners();

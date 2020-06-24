@@ -39,7 +39,6 @@ const profileVocation = document.querySelector('.profile__vocation');
 const popupEditForm = document.querySelector('.popup__container_edit');
 const popupAdd = document.querySelector('.popup_add');
 const popupAddForm = popupAdd.querySelector('.popup__container_add');
-const allPopup = document.querySelectorAll('.popup');
 const popupFullName = document.querySelector('#full-name');
 const popupVocation = document.querySelector('#vocation');
 const popupName = document.querySelector('#name');
@@ -47,7 +46,8 @@ const popupUrl = document.querySelector('#url');
 
 /* config */
 const popupClassMarker = 'popup_opened';
-const elements = document.querySelector('.elements'); // target for inserting new instances of Card
+const targetContainer = '.elements' // target for inserting new instances of Card
+const cardTemplate = '.element__template'
 
 /*validation const */
 const configValidation = {
@@ -69,13 +69,13 @@ export {
   profileVocation,
   popupEditForm,
   popupAddForm,
-  allPopup,
   popupFullName,
   popupVocation,
   popupName,
   popupUrl,
   popupClassMarker,
-  elements,
+  targetContainer,
+  cardTemplate,
   configValidation,
   editForm,
   addForm,
