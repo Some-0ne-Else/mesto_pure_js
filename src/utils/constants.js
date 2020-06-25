@@ -7,29 +7,29 @@ import greeceImage from '../images/element__image_greece.jpg'
 import montenegroImage from '../images/element__image_montenegro.jpg'
 const initialElements = [
   {
-    title: 'Сибуя',
-    url: sibuyaImage
-  },
-  {
-    title: 'Прага',
-    url: pragaImage
-  },
-  {
-    title: 'Иордания',
-    url: iordaniyaImage
-  },
-  {
-    title: 'Швейцария',
-    url: switzerlandImage
+    title: 'Черногория',
+    url: montenegroImage
   },
   {
     title: 'Греция',
     url: greeceImage
   },
   {
-    title: 'Черногория',
-    url: montenegroImage
-  }
+    title: 'Швейцария',
+    url: switzerlandImage
+  },
+  {
+    title: 'Иордания',
+    url: iordaniyaImage
+  },
+  {
+    title: 'Прага',
+    url: pragaImage
+  },
+  {
+    title: 'Сибуя',
+    url: sibuyaImage
+  },
 ];
 /* page elements const */
 const editButton = document.querySelector('.profile__edit-button');

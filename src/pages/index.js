@@ -1,9 +1,3 @@
-
-/*If u see this message that means that i misclicked a send button and  work goes  for recheck whithout any correction */
-/* Please just cancel it */
-
-
-
 import './index.css';
 
 import {
@@ -33,7 +27,7 @@ import PopupWithForm from '../components/PopupWithForm.js';
 /* creating instances of rendering logic */
 const enlargePopupInstance = new PopupWithImage('.popup-enlarge');
 
-const userData = new UserInfo( {fullname:profileFullName, vocation:profileVocation});
+const userData = new UserInfo({ fullName: profileFullName, vocation: profileVocation });
 const cardSection = new Section({
   items: initialElements,
   renderer: (item) => {
@@ -54,17 +48,17 @@ const addPopupInstance = new PopupWithForm('.popup_add', (formData) => {
   const card = new Card(formData.name, formData.url, enlargePopupInstance.open.bind(enlargePopupInstance), cardTemplate)
   const cardElement = card.generateCard();
   cardSection.addItem(cardElement);
- });
+});
 
 function editButtonHandler() {
-  clearValidationErrors(popupEditForm, editForm);
-  popupFullName.value =  userData.getUserInfo().name
+  editForm.clearValidationErrors(editForm);
+  popupFullName.value = userData.getUserInfo().name
   popupVocation.value = userData.getUserInfo().vocation
   editPopupInstance.open();
 }
 
 function addButtonHandler() {
-  clearValidationErrors(popupAddForm, addForm);
+  addForm.clearValidationErrors(addForm);
   addPopupInstance.open();
 }
 

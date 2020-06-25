@@ -1,20 +1,20 @@
 export default class UserInfo {
-  constructor({ fullname, vocation }) {
-    this._fullname = fullname;
+  constructor({ fullName, vocation }) {
+    this._fullName = fullName;
     this._vocation = vocation;
 
   }
 
   getUserInfo() {
-    return (this._userData = {
-      name: this._fullname.textContent,
+    return ({
+      name: this._fullName.textContent,
       vocation: this._vocation.textContent
     }
     );
   }
 
-  setUserInfo(UserData) {
-    this._fullname.textContent = UserData.fullname;
-    this._vocation.textContent = UserData.vocation;
+  setUserInfo(userData) {
+    this._fullName.textContent = userData.fullname;
+    this._vocation.textContent = userData.vocation;
   }
 }

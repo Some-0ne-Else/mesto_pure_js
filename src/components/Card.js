@@ -28,7 +28,7 @@ export default class Card {
     /* adding handlers */
     deleteButton.addEventListener('click', this._deleteElementHandler);
     elementLike.addEventListener('click', this._likeButtonHandler);
-    elementImage.addEventListener('click', (evt) => { this.handleCardClick(evt)});
+    elementImage.addEventListener('click', (evt) => { this.handleCardClick(this._title, this._url)});
 
     // return element outside
     return this._element;
