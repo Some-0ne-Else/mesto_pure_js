@@ -47,14 +47,14 @@ const addPopupInstance = new PopupWithForm('.popup_add', (formData) => {
 });
 
 function editButtonHandler() {
-  editForm.clearValidationErrors(editForm);
+  editForm.clearValidationErrors();
   popupFullName.value = userData.getUserInfo().name
   popupVocation.value = userData.getUserInfo().vocation
   editPopupInstance.open();
 }
 
 function addButtonHandler() {
-  addForm.clearValidationErrors(addForm);
+  addForm.clearValidationErrors();
   addPopupInstance.open();
 }
 
