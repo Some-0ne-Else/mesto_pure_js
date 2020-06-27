@@ -29,7 +29,7 @@ const cardSection = new Section({
   renderer: (item) => {
     const card = new Card(item.title, item.url, enlargePopupInstance.open.bind(enlargePopupInstance), cardTemplate);
     const cardElement = card.generateCard();
-    cardSection.addItem(cardElement);
+    cardSection.addInitialItem(cardElement);
   }
 }, targetContainer);
 
