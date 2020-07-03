@@ -12,6 +12,9 @@ import {
   cardTemplate,
   editForm,
   addForm,
+  token,
+  userInfoUrl,
+  cardsUrl,
 } from '../utils/constants.js';
 
 import Card from '../components/Card.js';
@@ -19,11 +22,26 @@ import Section from '../components/Section.js';
 import UserInfo from '../components/UserInfo.js'
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
+import Api from '../components/Api.js';
 
 /* creating instances of rendering logic */
+const api = new Api(token);
+//api.fetchData(userInfoUrl, (object) => console.log(object));
+
+//api.fetchData(cardsUrl, (object) => console.log(object));
+
 const enlargePopupInstance = new PopupWithImage('.popup-enlarge');
 
-const userData = new UserInfo({ fullName: profileFullName, vocation: profileVocation });
+api.getInitialCards(cardsUrl);
+
+
+ //const someconst = api.fetchData(userInfoUrl)
+
+//const userData = new UserInfo({ fullName: profileFullName, vocation: profileVocation, imgUrl: });
+
+
+
+
 const cardSection = new Section({
   items: initialElements,
   renderer: (item) => {

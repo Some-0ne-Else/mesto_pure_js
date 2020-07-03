@@ -43,8 +43,12 @@ const popupFullName = document.querySelector('#full-name');
 const popupVocation = document.querySelector('#vocation');
 
 /* config */
-const targetContainer = '.elements' // target for inserting new instances of Card
-const cardTemplate = '.element__template'
+const targetContainer = '.elements'; // target for inserting new instances of Card
+const cardTemplate = '.element__template';
+const token = '91f20ff1-daca-4d5c-889a-e104c276a690';
+const cohort = 'cohort-12';
+const userInfoUrl = `https://mesto.nomoreparties.co/v1/${cohort}/users/me`;
+const cardsUrl = `https://mesto.nomoreparties.co/v1/${cohort}/cards`;
 
 /*validation const */
 const configValidation = {
@@ -71,4 +75,7 @@ export {
   configValidation,
   editForm,
   addForm,
+  token,
+  userInfoUrl,
+  cardsUrl,
 };
