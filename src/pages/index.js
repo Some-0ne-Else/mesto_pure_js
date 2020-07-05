@@ -35,7 +35,11 @@ const enlargePopupInstance = new PopupWithImage('.popup-enlarge');
 const fetchedCards = api.fetchData(cardsUrl);
 const fetchedUserInfo = api.fetchData(userInfoUrl);
 const userData = new UserInfo({ fullName: profileFullName, vocation: profileVocation, avatar: profileAvatar });
-const avatarPopupInstance = new PopupWithForm('.popup_avatar', () => { const result = api.updateAvatar(userInfoUrl, popupAvatar.value); result.then((data) => profileAvatar.src = data.avatar) });
+const avatarPopupInstance = new PopupWithForm('.popup_avatar', () => {
+  const actionButton = document.querySelector('.popup_avatar').querySelector('.popup__action-button');
+  actionButton.textContent = "Сохранение..."
+  api.updateAvatar(userInfoUrl, popupAvatar.value)
+  .then((data) => {profileAvatar.src = data.avatar; actionButton.textContent = "Сохранить"; }) });
 
 /* set data from server to page */
 fetchedUserInfo.then((result) => { userData.setUserInfo(result); });
@@ -49,7 +53,6 @@ const cardSection = new Section({
         const likeCouner = evt.target.parentNode.querySelector('.element__like-counter');
         if (!card._isLiked()) { evt.target.classList.add('element__like_active'); likeCouner.textContent = parseInt(item.likes.length, 10) + 1; }
         else { evt.target.classList.remove('element__like_active'); likeCouner.textContent = parseInt(item.likes.length, 10) - 1; }
-        console.log('likeCounter', likeCouner)
         api.likeCard(cardsUrl, item._id, item.likes, idOnServer);
       },
       cardTemplate);
@@ -76,10 +79,13 @@ const addPopupInstance = new PopupWithForm('.popup_add', (formData) => {
   const card = new Card(formData.name, formData.url, [], null, idOnServer, idOnServer,
     enlargePopupInstance.open.bind(enlargePopupInstance),
     deletePopupInstance.open.bind(deletePopupInstance),
-    api.likeCard(cardsUrl, null, null),
+   () => { api.likeCard(cardsUrl, null, []); },
     cardTemplate);
   const cardElement = card.generateCard();
-  api.postCard(cardsUrl, formData.name, formData.url);
+  const actionButton = document.querySelector('.popup_add').querySelector('.popup__action-button');
+  actionButton.textContent = "Сохранение..."
+  api.postCard(cardsUrl, formData.name, formData.url)
+  .then(() => {actionButton.textContent = "Создать"; window.location.reload(false);});
   cardSection.addItem(cardElement);
 });
 

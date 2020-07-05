@@ -37,7 +37,7 @@ export default class Api {
   }
 
     postCard(url,name, link){
-      fetch(url, {
+     return fetch(url, {
         method: 'POST',
         headers: {
           authorization: this._token,

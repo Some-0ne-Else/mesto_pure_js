@@ -36,7 +36,7 @@ export default class Card {
     /* adding handlers */
     if(this._isOwner()) {deleteButton.addEventListener('click', (evt) =>  {this._handleDeleteClick(evt, this._cardId);} );} else {deleteButton.remove();}
     if (this._isLiked()) {elementLike.classList.add('element__like_active')}
-    elementLike.addEventListener('click', (evt) => {console.log("like"); this._handleLikeClick(evt, this._cardId)});
+    elementLike.addEventListener('click', (evt) => {this._handleLikeClick(evt, this._cardId)});
     elementImage.addEventListener('click', () => { this.handleCardClick(this._title, this._url)});
 
     // return element outside
