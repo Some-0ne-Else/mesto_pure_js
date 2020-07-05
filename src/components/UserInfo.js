@@ -1,20 +1,33 @@
 export default class UserInfo {
-  constructor({ fullName, vocation }) {
-    this._fullName = fullName;
-    this._vocation = vocation;
-
+  constructor({ fullName, vocation, avatar }) {
+    this._name = fullName;
+    this._about = vocation;
+    this._avatar = avatar;
   }
 
   getUserInfo() {
     return ({
-      name: this._fullName.textContent,
-      vocation: this._vocation.textContent
+      name: this._name.textContent,
+      about: this._about.textContent,
     }
     );
   }
 
-  setUserInfo(userData) {
-    this._fullName.textContent = userData.fullname;
-    this._vocation.textContent = userData.vocation;
+  setUserInfo(formData) {
+    this._name.textContent = formData.name;
+    this._about.textContent = formData.about;
+    if(formData.avatar){this._avatar.src = formData.avatar;}
+  }
+
+  getUserAvatar() {
+    return (
+      {
+        avatar: this._avatar.src
+      }
+    )
+  }
+
+  setUserAvatar(formData) {
+    this._avatar.src = formData.avatar;
   }
 }
