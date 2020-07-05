@@ -91,7 +91,8 @@ export default class Api {
         avatar: `${link}`
       })
     })
-    .then((result) =>  result.json())
+    .then((result) => {if (result.ok) { return result.json(); }
+    else { return Promise.reject(`Ошибка: ${result.status}`); } })
     .then((result) => {return result})
       .catch((err) => { console.log(err) });
   }
