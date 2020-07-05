@@ -1,0 +1,8 @@
+.profile__wrapper {
+  position: relative;
+  transition: ease 0.3s;
+}
+
+.profile__wrapper:hover {
+  opacity: 0.8;
+}

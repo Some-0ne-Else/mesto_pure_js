@@ -1,54 +1,25 @@
 import FormValidator from '../components/FormValidator.js';
-import montenegroImage from '../images/element__image_montenegro.jpg'
-import greeceImage from '../images/element__image_greece.jpg'
-import switzerlandImage from '../images/element__image_switzerland.jpg'
-import iordaniyaImage from '../images/element__image_iordaniya.jpg'
-import pragaImage from '../images/element__image_praga.jpg'
-import sibuyaImage from '../images/element__image_sibuya.jpg'
-
-const initialElements = [
-  {
-    title: 'Черногория',
-    url: montenegroImage
-  },
-  {
-    title: 'Греция',
-    url: greeceImage
-  },
-  {
-    title: 'Швейцария',
-    url: switzerlandImage
-  },
-  {
-    title: 'Иордания',
-    url: iordaniyaImage
-  },
-  {
-    title: 'Прага',
-    url: pragaImage
-  },
-  {
-    title: 'Сибуя',
-    url: sibuyaImage
-  },
-];
 /* page elements const */
 const editButton = document.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button');
+const editAvatar = document.querySelector('.profile__avatar-edit');
 const profileFullName = document.querySelector('.profile__full-name');
 const profileVocation = document.querySelector('.profile__vocation');
-
+const profileAvatar = document.querySelector('.profile__avatar');
 /* popup const */
 const popupFullName = document.querySelector('#full-name');
 const popupVocation = document.querySelector('#vocation');
+const popupAvatar = document.querySelector('#link');
 
 /* config */
 const targetContainer = '.elements'; // target for inserting new instances of Card
 const cardTemplate = '.element__template';
 const token = '91f20ff1-daca-4d5c-889a-e104c276a690';
+const idOnServer = 'a2ce638f0c69119d45d04bb7';
 const cohort = 'cohort-12';
-const userInfoUrl = `https://mesto.nomoreparties.co/v1/${cohort}/users/me`;
-const cardsUrl = `https://mesto.nomoreparties.co/v1/${cohort}/cards`;
+const baseUrl = 'https://mesto.nomoreparties.co/v1/'
+const userInfoUrl = `${baseUrl}${cohort}/users/me`;
+const cardsUrl = `${baseUrl}${cohort}/cards`;
 
 /*validation const */
 const configValidation = {
@@ -61,21 +32,26 @@ const configValidation = {
 };
 const editForm = new FormValidator(configValidation, ".popup__container_edit");
 const addForm = new FormValidator(configValidation, ".popup__container_add");
+const editAvatarForm = new FormValidator(configValidation, ".popup__container_avatar");
 
 export {
-  initialElements,
   editButton,
   addButton,
+  editAvatar,
   profileFullName,
   profileVocation,
+  profileAvatar,
   popupFullName,
   popupVocation,
+  popupAvatar,
   targetContainer,
   cardTemplate,
   configValidation,
   editForm,
   addForm,
+  editAvatarForm,
   token,
   userInfoUrl,
   cardsUrl,
+  idOnServer,
 };

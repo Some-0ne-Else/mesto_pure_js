@@ -14,11 +14,14 @@
     </header>
     <main class="content">
       <section class="profile">
-        <img class="profile__avatar" src="./images/profile__avatar_image.jpg" alt="Фото профиля">
+        <div class="profile__wrapper">
+        <img class="profile__avatar"  alt="Фото профиля">
+        <img class="profile__avatar-edit" src="./images/profile__edit-button_image.svg" alt="Редактировать">
+      </div>
         <div class="profile__profile-info">
-          <h2 class="profile__full-name">Жак-Ив Кусто</h2>
+          <h2 class="profile__full-name"></h2>
           <button class="profile__edit-button"></button>
-          <p class="profile__vocation">Исследователь океана</p>
+          <p class="profile__vocation"></p>
         </div>
         <button class="profile__add-button"></button>
       </section>
@@ -32,11 +35,11 @@
       <form class="popup__container popup__container_edit">
         <h2 class="popup__heading">Редактировать профиль</h2>
         <button type="button" class="popup__close-button"></button>
-        <!-- добавлено отсечение имен из одних пробелов и дефисов, а так же висячих дефисов-->
-        <input type="text" class="popup__input" name="fullname" id="full-name" placeholder="Имя полностью" minlength="2"
+        <!-- добавлено отсечение имен из одних пробелов и дефисов, а так же "висячих" дефисов-->
+        <input type="text" class="popup__input" name="name" id="full-name" placeholder="Имя полностью" minlength="2"
           maxlength="40" pattern="[a-zA-ZА-ЯЁа-яё\s\-]+[^\s\-]+" required novalidate>
         <p class="popup__input-error" id="full-name-error"></p>
-        <input type="text" class="popup__input" name="vocation" id="vocation" placeholder="Призвание" minlength="2"
+        <input type="text" class="popup__input" name="about" id="vocation" placeholder="Призвание" minlength="2"
           maxlength="200" required novalidate>
         <p class="popup__input-error" id="vocation-error"></p>
         <button type="submit" class="popup__action-button popup__action-button_edit">Сохранить</button>
@@ -61,12 +64,32 @@
         <p class="popup__caption"></p>
       </div>
     </section>
+    <section class="popup popup_delete">
+      <form class="popup__container popup__container_delete">
+        <h2 class="popup__heading">Вы уверены?</h2>
+        <button type="button" class="popup__close-button"></button>
+        <button type="submit" class="popup__action-button">Да</button>
+      </form>
+    </section>
+    <section class="popup popup_avatar">
+      <form class="popup__container popup__container_avatar">
+        <h2 class="popup__heading">Обновить аватар</h2>
+        <button type="button" class="popup__close-button"></button>
+        <!-- добавлено отсечение имен из одних пробелов и дефисов, а так же висячих дефисов-->
+        <input type="url" class="popup__input" name="url" id="link" placeholder="Ссылка на картинку" required novalidate>
+        <p class="popup__input-error" id="link-error"></p>
+        <button type="submit" class="popup__action-button">Создать</button>
+      </form>
+    </section>
     <template class="element__template">
       <div class="element">
         <img class="element__image">
         <button type="button" class="element__delete-button"></button>
         <p class="element__title"></p>
+        <div class="element__wrapper">
         <button class="element__like"></button>
+        <p class="element__like-counter"></p>
+        </div>
       </div>
     </template>
   </div>

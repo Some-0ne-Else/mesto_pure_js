@@ -1,30 +1,33 @@
 export default class UserInfo {
-  constructor({ fullName, vocation, imgUrl }) {
-    this._fullName = fullName;
-    this._vocation = vocation;
-    this._imgUrl = imgUrl;
-  }
-
-  createMarkup(){
-    return
-    `<img class="profile__avatar" src=${this._imgUrl} alt="Фото профиля">
-    <div class="profile__profile-info">
-      <h2 class="profile__full-name">${this._fullName}</h2>
-      <button class="profile__edit-button"></button>
-      <p class="profile__vocation">${this._vocation}</p>
-    </div>`
+  constructor({ fullName, vocation, avatar }) {
+    this._name = fullName;
+    this._about = vocation;
+    this._avatar = avatar;
   }
 
   getUserInfo() {
     return ({
-      name: this._fullName.textContent,
-      vocation: this._vocation.textContent
+      name: this._name.textContent,
+      about: this._about.textContent,
     }
     );
   }
 
-  setUserInfo(userData) {
-    this._fullName.textContent = userData.fullname;
-    this._vocation.textContent = userData.vocation;
+  setUserInfo(formData) {
+    this._name.textContent = formData.name;
+    this._about.textContent = formData.about;
+    if(formData.avatar){this._avatar.src = formData.avatar;}
+  }
+
+  getUserAvatar() {
+    return (
+      {
+        avatar: this._avatar.src
+      }
+    )
+  }
+
+  setUserAvatar(formData) {
+    this._avatar.src = formData.avatar;
   }
 }
