@@ -4,6 +4,7 @@ export default class PopupWithModal extends Popup {
   constructor(popupSelector, submitHandler) {
     super(popupSelector)
     this._submitHandler = submitHandler;
+
   }
   open(cardId, e){
     this._cardId = cardId;

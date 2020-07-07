@@ -34,8 +34,8 @@ export default class Card {
     const deleteButton = this._element.querySelector('.element__delete-button');
     const elementLike = this._element.querySelector('.element__like');
     /* adding handlers */
-    if(this._isOwner()) {deleteButton.addEventListener('click', (evt) =>  {this._handleDeleteClick(evt, this._cardId);} );} else {deleteButton.remove();}
-    if (this._isLiked()) {elementLike.classList.add('element__like_active')}
+    if(this._isOwner()) {deleteButton.addEventListener('click', (evt) =>  {this._handleDeleteClick(evt, this._cardId);});} else {deleteButton.remove();}
+    if(this.isLiked()) {elementLike.classList.add('element__like_active')}
     elementLike.addEventListener('click', (evt) => {this._handleLikeClick(evt, this._cardId)});
     elementImage.addEventListener('click', () => { this.handleCardClick(this._title, this._url)});
 
@@ -49,7 +49,7 @@ export default class Card {
   _isOwner(){
     if(this._ownerId===this._idOnServer) {return true} else {return false}
   }
-  _isLiked(){
+  isLiked(){
     const hasLike = (element) => element._id===this._idOnServer;
     return this._likesArray.some(hasLike);
   }

@@ -1,5 +1,5 @@
 import './index.css';
-
+/* Спасибо за ценные замечания. Многое прояснилось. */
 import {
   editButton,
   addButton,
@@ -12,12 +12,14 @@ import {
   popupAvatar,
   targetContainer,
   cardTemplate,
-  editForm,
-  addForm,
-  editAvatarForm,
+  editFormValidaion,
+  addFormValidation,
+  avatarFormValidation,
   token,
-  userInfoUrl,
-  cardsUrl,
+  cohort,
+  baseUrl,
+  userInfoPostfix,
+  cardsPostfix,
   idOnServer,
 } from '../utils/constants.js';
 
@@ -30,79 +32,90 @@ import PopupWithModal from '../components/PopupWithModal.js';
 import Api from '../components/Api.js';
 
 /* creating instances of rendering logic */
-const api = new Api(token);
+const api = new Api(token, baseUrl, cohort);
 const enlargePopupInstance = new PopupWithImage('.popup-enlarge');
-const fetchedCards = api.fetchData(cardsUrl);
-const fetchedUserInfo = api.fetchData(userInfoUrl);
+const fetchedCards = api.fetchData(cardsPostfix);
+const fetchedUserInfo = api.fetchData(userInfoPostfix);
 const userData = new UserInfo({ fullName: profileFullName, vocation: profileVocation, avatar: profileAvatar });
 const avatarPopupInstance = new PopupWithForm('.popup_avatar', () => {
   const actionButton = document.querySelector('.popup_avatar').querySelector('.popup__action-button');
   actionButton.textContent = "Сохранение..."
-  api.updateAvatar(userInfoUrl, popupAvatar.value)
-  .then((data) => {profileAvatar.src = data.avatar; actionButton.textContent = "Сохранить"; }) });
+  api.updateAvatar(userInfoPostfix, popupAvatar.value)
+    .then((data) => { profileAvatar.src = data.avatar; actionButton.textContent = "Сохранить"; })
+});
 
 /* set data from server to page */
 fetchedUserInfo.then((result) => { userData.setUserInfo(result); });
 
-const cardSection = new Section({
-  items: fetchedCards.then((result) => result.forEach((item) => {
-    const card = new Card(item.name, item.link, item.likes, item._id, item.owner._id, idOnServer,
-      enlargePopupInstance.open.bind(enlargePopupInstance),
-      deletePopupInstance.open.bind(deletePopupInstance, item._id),
-      (evt, cardId) => {
-        const likeCouner = evt.target.parentNode.querySelector('.element__like-counter');
-        if (!card._isLiked()) { evt.target.classList.add('element__like_active'); likeCouner.textContent = parseInt(item.likes.length, 10) + 1; }
-        else { evt.target.classList.remove('element__like_active'); likeCouner.textContent = parseInt(item.likes.length, 10) - 1; }
-        api.likeCard(cardsUrl, item._id, item.likes, idOnServer);
-      },
-      cardTemplate);
-    const cardElement = card.generateCard();
-    cardSection.addInitialItem(cardElement);
-  })),
-}, targetContainer);
+/*make it in global scope, mb there is another better way */
+let cardSection;
+fetchedCards.then((result) => {
+  cardSection = new Section({
+    items: result.reverse(),
+    renderer: (item) => {
+      const card = new Card(item.name, item.link, item.likes, item._id, item.owner._id, idOnServer,
+        enlargePopupInstance.open.bind(enlargePopupInstance),
+        deletePopupInstance.open.bind(deletePopupInstance, item._id),
+        (evt, cardId) => {
+          const likeCouner = evt.target.parentNode.querySelector('.element__like-counter');
+          const isLiked = card.isLiked();
+          if (!card.isLiked()) { evt.target.classList.add('element__like_active'); likeCouner.textContent = String(parseInt(card._likesArray.length, 10) + 1); }
+          else { evt.target.classList.remove('element__like_active'); likeCouner.textContent = String(parseInt(card._likesArray.length, 10) - 1); }
+          api.likeCard(cardsPostfix, item._id, item.likes, idOnServer, isLiked).then((result) => card._likesArray = result.likes);
+        },
+        cardTemplate);
+      const cardElement = card.generateCard();
+      cardSection.addItem(cardElement);
+    },
+  }, targetContainer);
+  cardSection.renderItems();
+});
 
 /* making instances of popup clases */
 const editPopupInstance = new PopupWithForm('.popup_edit', (formData) => {
   userData.setUserInfo(formData);
   const actionButton = document.querySelector('.popup_edit').querySelector('.popup__action-button');
   actionButton.textContent = "Сохранение..."
-  api.editProfile(userInfoUrl, formData.name, formData.about).then(() => { actionButton.textContent = "Сохранить" });
+  api.editProfile(userInfoPostfix, formData.name, formData.about).then(() => { actionButton.textContent = "Сохранить" });
 });
 
 const deletePopupInstance = new PopupWithModal('.popup_delete', (e, cardId) => {
-  api.deleteCard(`${cardsUrl}/${cardId}`);
+  api.deleteCard(`${cardsPostfix}/${cardId}`);
+  console.log("cardId", cardId); console.log("event", event);
   const elementToDelete = e.target.closest('.element');
   elementToDelete.remove();
 });
 
 const addPopupInstance = new PopupWithForm('.popup_add', (formData) => {
-  const card = new Card(formData.name, formData.url, [], null, idOnServer, idOnServer,
-    enlargePopupInstance.open.bind(enlargePopupInstance),
-    deletePopupInstance.open.bind(deletePopupInstance),
-   () => { api.likeCard(cardsUrl, null, []); },
-    cardTemplate);
-  const cardElement = card.generateCard();
   const actionButton = document.querySelector('.popup_add').querySelector('.popup__action-button');
   actionButton.textContent = "Сохранение..."
-  api.postCard(cardsUrl, formData.name, formData.url)
-  .then(() => {actionButton.textContent = "Создать"; window.location.reload(false);});
-  cardSection.addItem(cardElement);
+  api.postCard(cardsPostfix, formData.name, formData.url)
+    .then((result) => {
+      actionButton.textContent = "Создать";
+      const card = new Card(formData.name, formData.url, [], null, idOnServer, idOnServer,
+        enlargePopupInstance.open.bind(enlargePopupInstance),
+        deletePopupInstance.open.bind(deletePopupInstance, result._id),
+        () => { api.likeCard(cardsPostfix, null, []); },
+        cardTemplate);
+      const cardElement = card.generateCard();
+      cardSection.addItem(cardElement);
+    });
 });
 
 function editButtonHandler() {
-  editForm.clearValidationErrors();
+  editFormValidaion.clearValidationErrors();
   popupFullName.value = userData.getUserInfo().name;
   popupVocation.value = userData.getUserInfo().about;
   editPopupInstance.open();
 }
 
 function addButtonHandler() {
-  addForm.clearValidationErrors();
+  addFormValidation.clearValidationErrors();
   addPopupInstance.open();
 }
 
 function editAvatarHandler() {
-  editAvatarForm.clearValidationErrors();
+  avatarFormValidation.clearValidationErrors();
   avatarPopupInstance.open();
 }
 /*adding event listeners  */
@@ -115,6 +128,6 @@ avatarPopupInstance.setEventListeners();
 deletePopupInstance.setEventListeners();
 enlargePopupInstance.setEventListeners();
 // enable validation
-editForm.enableValidation();
-addForm.enableValidation();
-editAvatarForm.enableValidation();
+editFormValidaion.enableValidation();
+addFormValidation.enableValidation();
+avatarFormValidation.enableValidation();
