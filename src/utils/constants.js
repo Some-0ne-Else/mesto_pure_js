@@ -18,8 +18,8 @@ const token = '91f20ff1-daca-4d5c-889a-e104c276a690';
 const idOnServer = 'a2ce638f0c69119d45d04bb7';
 const cohort = 'cohort-12';
 const baseUrl = 'https://mesto.nomoreparties.co/v1/'
-const userInfoUrl = `${baseUrl}${cohort}/users/me`;
-const cardsUrl = `${baseUrl}${cohort}/cards`;
+const userInfoPostfix = `/users/me`;
+const cardsPostfix = `/cards`;
 
 /*validation const */
 const configValidation = {
@@ -30,9 +30,9 @@ const configValidation = {
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__input-error_active'
 };
-const editForm = new FormValidator(configValidation, ".popup__container_edit");
-const addForm = new FormValidator(configValidation, ".popup__container_add");
-const editAvatarForm = new FormValidator(configValidation, ".popup__container_avatar");
+const editFormValidaion = new FormValidator(configValidation, ".popup__container_edit");
+const addFormValidation = new FormValidator(configValidation, ".popup__container_add");
+const avatarFormValidation = new FormValidator(configValidation, ".popup__container_avatar");
 
 export {
   editButton,
@@ -47,11 +47,13 @@ export {
   targetContainer,
   cardTemplate,
   configValidation,
-  editForm,
-  addForm,
-  editAvatarForm,
+  editFormValidaion,
+  addFormValidation,
+  avatarFormValidation,
   token,
-  userInfoUrl,
-  cardsUrl,
+  cohort,
+  baseUrl,
+  userInfoPostfix,
+  cardsPostfix,
   idOnServer,
 };

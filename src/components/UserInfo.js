@@ -16,18 +16,6 @@ export default class UserInfo {
   setUserInfo(formData) {
     this._name.textContent = formData.name;
     this._about.textContent = formData.about;
-    if(formData.avatar){this._avatar.src = formData.avatar;}
-  }
-
-  getUserAvatar() {
-    return (
-      {
-        avatar: this._avatar.src
-      }
-    )
-  }
-
-  setUserAvatar(formData) {
-    this._avatar.src = formData.avatar;
+    if (formData.avatar) { this._avatar.src = formData.avatar; }
   }
 }

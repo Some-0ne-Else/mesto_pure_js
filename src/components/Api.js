@@ -1,10 +1,10 @@
 export default class Api {
-  constructor(token, baseUrl) {
+  constructor(token, baseUrl, cohort) {
     this._token = token;
-    this._baseUrl = baseUrl; //not using yet
+    this._baseUrl = `${baseUrl}${cohort}`;
   }
-  fetchData(url) {
-    return fetch(url, {
+  fetchData(urlPostfix) {
+    return fetch(`${this._baseUrl}${urlPostfix}`, {
       headers: {
         authorization: this._token,
         'Content-Type': 'application/json'
@@ -14,15 +14,12 @@ export default class Api {
         if (result.ok) { return result.json(); }
         else { return Promise.reject(`Ошибка: ${result.status}`); }
       })
-      .then((result) => {
-        return result
-      })
       .catch((err) => {
         console.log(err);
       });
   }
-  editProfile(url, name, about) {
-    return fetch(url, {
+  editProfile(urlPostfix, name, about) {
+    return fetch(`${this._baseUrl}${urlPostfix}`, {
       method: 'PATCH',
       headers: {
         authorization: this._token,
@@ -36,23 +33,24 @@ export default class Api {
       .catch((err) => { console.log(err) });
   }
 
-    postCard(url,name, link){
-     return fetch(url, {
-        method: 'POST',
-        headers: {
-          authorization: this._token,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: `${name}`,
-          link: `${link}`
-        })
+  postCard(urlPostfix, name, link) {
+    return fetch(`${this._baseUrl}${urlPostfix}`, {
+      method: 'POST',
+      headers: {
+        authorization: this._token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: `${name}`,
+        link: `${link}`
       })
-        .catch((err) => { console.log(err) });
-    }
+    })
+      .then((result) => result.json())
+      .catch((err) => { console.log(err) });
+  }
 
-  deleteCard(url){
-    fetch(url, {
+  deleteCard(urlPostfix) {
+    return fetch(`${this._baseUrl}${urlPostfix}`, {
       method: 'DELETE',
       headers: {
         authorization: this._token,
@@ -61,27 +59,22 @@ export default class Api {
     })
       .catch((err) => { console.log(err) });
   }
-  likeCard(cardUrl, cardId, likes, idOnServer){
+  likeCard(urlPostfix, cardId, likes, idOnServer, isLiked) {
     let methodValue;
-    const hasLike = (element) => element._id===idOnServer;
-    let isLiked;
-    if(likes){ isLiked = likes.some(hasLike);} else{ isLiked = false;}
-    if(isLiked){ methodValue = 'DELETE'} else {methodValue = 'PUT'}
-    fetch(`${cardUrl}/likes/${cardId}`, {
+    isLiked ? methodValue = 'DELETE' : methodValue = 'PUT'
+    return fetch(`${this._baseUrl}${urlPostfix}/likes/${cardId}`, {
       method: methodValue,
       headers: {
         authorization: this._token,
         'Content-Type': 'application/json'
       },
     })
-      .catch((err) => { console.log(err) });
+      .then((result) => result.json())
+      .catch((err) => console.log(err));
   }
-  isLiked(){
-    const hasLike = (element) => element._id===idOnServer;
-    let isLiked = likes.some(hasLike);
-  }
-  updateAvatar(userInfoUrl,link){
-   return fetch(`${userInfoUrl}/avatar`, {
+
+  updateAvatar(urlPostfix, link) {
+    return fetch(`${this._baseUrl}${urlPostfix}/avatar`, {
       method: 'PATCH',
       headers: {
         authorization: this._token,
@@ -91,8 +84,10 @@ export default class Api {
         avatar: `${link}`
       })
     })
-    .then((result) =>  result.json())
-    .then((result) => {return result})
+      .then((result) => {
+        if (result.ok) { return result.json(); }
+        else { return Promise.reject(`Ошибка: ${result.status}`); }
+      })
       .catch((err) => { console.log(err) });
   }
 
