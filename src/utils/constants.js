@@ -10,7 +10,9 @@ const profileAvatar = document.querySelector('.profile__avatar');
 const popupFullName = document.querySelector('#full-name');
 const popupVocation = document.querySelector('#vocation');
 const popupAvatar = document.querySelector('#link');
-
+const editActionButton = document.querySelector('.popup_edit').querySelector('.popup__action-button');
+const avatarActionButton = document.querySelector('.popup_avatar').querySelector('.popup__action-button');
+const addActionButton = document.querySelector('.popup_add').querySelector('.popup__action-button');
 /* config */
 const targetContainer = '.elements'; // target for inserting new instances of Card
 const cardTemplate = '.element__template';
@@ -56,4 +58,7 @@ export {
   userInfoPostfix,
   cardsPostfix,
   idOnServer,
+  editActionButton,
+  avatarActionButton,
+  addActionButton,
 };

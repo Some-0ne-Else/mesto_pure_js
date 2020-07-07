@@ -21,6 +21,9 @@ import {
   userInfoPostfix,
   cardsPostfix,
   idOnServer,
+  editActionButton,
+  avatarActionButton,
+  addActionButton,
 } from '../utils/constants.js';
 
 import Card from '../components/Card.js';
@@ -38,10 +41,9 @@ const fetchedCards = api.fetchData(cardsPostfix);
 const fetchedUserInfo = api.fetchData(userInfoPostfix);
 const userData = new UserInfo({ fullName: profileFullName, vocation: profileVocation, avatar: profileAvatar });
 const avatarPopupInstance = new PopupWithForm('.popup_avatar', () => {
-  const actionButton = document.querySelector('.popup_avatar').querySelector('.popup__action-button');
-  actionButton.textContent = "Сохранение..."
+  showSavingState(avatarActionButton)
   api.updateAvatar(userInfoPostfix, popupAvatar.value)
-    .then((data) => { profileAvatar.src = data.avatar; actionButton.textContent = "Сохранить"; })
+    .then((data) => { profileAvatar.src = data.avatar; avatarActionButton.textContent = "Сохранить"; })
 });
 
 /* set data from server to page */
@@ -74,24 +76,21 @@ fetchedCards.then((result) => {
 /* making instances of popup clases */
 const editPopupInstance = new PopupWithForm('.popup_edit', (formData) => {
   userData.setUserInfo(formData);
-  const actionButton = document.querySelector('.popup_edit').querySelector('.popup__action-button');
-  actionButton.textContent = "Сохранение..."
-  api.editProfile(userInfoPostfix, formData.name, formData.about).then(() => { actionButton.textContent = "Сохранить" });
+  showSavingState(editActionButton)
+  api.editProfile(userInfoPostfix, formData.name, formData.about).then(() => { editActionButton.textContent = "Сохранить" });
 });
 
 const deletePopupInstance = new PopupWithModal('.popup_delete', (e, cardId) => {
   api.deleteCard(`${cardsPostfix}/${cardId}`);
-  console.log("cardId", cardId); console.log("event", event);
   const elementToDelete = e.target.closest('.element');
   elementToDelete.remove();
 });
 
 const addPopupInstance = new PopupWithForm('.popup_add', (formData) => {
-  const actionButton = document.querySelector('.popup_add').querySelector('.popup__action-button');
-  actionButton.textContent = "Сохранение..."
+  showSavingState(addActionButton)
   api.postCard(cardsPostfix, formData.name, formData.url)
     .then((result) => {
-      actionButton.textContent = "Создать";
+      addActionButton.textContent = "Создать";
       const card = new Card(formData.name, formData.url, [], null, idOnServer, idOnServer,
         enlargePopupInstance.open.bind(enlargePopupInstance),
         deletePopupInstance.open.bind(deletePopupInstance, result._id),
@@ -117,6 +116,9 @@ function addButtonHandler() {
 function editAvatarHandler() {
   avatarFormValidation.clearValidationErrors();
   avatarPopupInstance.open();
+}
+function showSavingState(actionButton) {
+  actionButton.textContent = "Сохранение..."
 }
 /*adding event listeners  */
 editButton.addEventListener('click', editButtonHandler);
