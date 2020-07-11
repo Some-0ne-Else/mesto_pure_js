@@ -43,9 +43,6 @@ export default class Card {
     return this._element;
   }
 
-  _likeButtonHandler(evt) {
-    evt.target.classList.toggle('element__like_active');
-  }
   _isOwner(){
     if(this._ownerId===this._idOnServer) {return true} else {return false}
   }
@@ -53,5 +50,9 @@ export default class Card {
     const hasLike = (element) => element._id===this._idOnServer;
     return this._likesArray.some(hasLike);
   }
-
+ handleCounter(evt){
+  const likeCounter = evt.target.parentNode.querySelector('.element__like-counter');
+  if (!this.isLiked()) { evt.target.classList.add('element__like_active'); likeCounter.textContent = String(parseInt(this._likesArray.length, 10) + 1); }
+  else { evt.target.classList.remove('element__like_active'); likeCounter.textContent = String(parseInt(this._likesArray.length, 10) - 1); }
+ }
 }
