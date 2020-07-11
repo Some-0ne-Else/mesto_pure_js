@@ -1,5 +1,5 @@
 import './index.css';
-/* Спасибо за ценные замечания. Многое прояснилось. */
+/* Извините, был в командировке, поэтому такая большая задержка с внесением изменений. */
 import {
   editButton,
   addButton,
@@ -59,10 +59,8 @@ fetchedCards.then((result) => {
         enlargePopupInstance.open.bind(enlargePopupInstance),
         deletePopupInstance.open.bind(deletePopupInstance, item._id),
         (evt, cardId) => {
-          const likeCouner = evt.target.parentNode.querySelector('.element__like-counter');
           const isLiked = card.isLiked();
-          if (!card.isLiked()) { evt.target.classList.add('element__like_active'); likeCouner.textContent = String(parseInt(card._likesArray.length, 10) + 1); }
-          else { evt.target.classList.remove('element__like_active'); likeCouner.textContent = String(parseInt(card._likesArray.length, 10) - 1); }
+          card.handleCounter(evt); /* Надеюсь, я правильно вас понял */
           api.likeCard(cardsPostfix, item._id, item.likes, idOnServer, isLiked).then((result) => card._likesArray = result.likes);
         },
         cardTemplate);
@@ -81,9 +79,10 @@ const editPopupInstance = new PopupWithForm('.popup_edit', (formData) => {
 });
 
 const deletePopupInstance = new PopupWithModal('.popup_delete', (e, cardId) => {
-  api.deleteCard(`${cardsPostfix}/${cardId}`);
-  const elementToDelete = e.target.closest('.element');
-  elementToDelete.remove();
+  api.deleteCard(`${cardsPostfix}/${cardId}`).then(() => {
+    const elementToDelete = e.target.closest('.element');
+    elementToDelete.remove();
+  })
 });
 
 const addPopupInstance = new PopupWithForm('.popup_add', (formData) => {
@@ -91,10 +90,15 @@ const addPopupInstance = new PopupWithForm('.popup_add', (formData) => {
   api.postCard(cardsPostfix, formData.name, formData.url)
     .then((result) => {
       addActionButton.textContent = "Создать";
-      const card = new Card(formData.name, formData.url, [], null, idOnServer, idOnServer,
+      console.log(result);
+      const card = new Card(formData.name, formData.url, result.likes, result._id, result.owner._id, idOnServer,
         enlargePopupInstance.open.bind(enlargePopupInstance),
         deletePopupInstance.open.bind(deletePopupInstance, result._id),
-        () => { api.likeCard(cardsPostfix, null, []); },
+        (evt) => {
+          const isLiked = card.isLiked();
+          card.handleCounter(evt);
+          api.likeCard(cardsPostfix, result._id, result.likes, idOnServer, isLiked).then((result) => card._likesArray = result.likes);
+        },
         cardTemplate);
       const cardElement = card.generateCard();
       cardSection.addItem(cardElement);
@@ -103,8 +107,9 @@ const addPopupInstance = new PopupWithForm('.popup_add', (formData) => {
 
 function editButtonHandler() {
   editFormValidaion.clearValidationErrors();
-  popupFullName.value = userData.getUserInfo().name;
-  popupVocation.value = userData.getUserInfo().about;
+  const userInfo = userData.getUserInfo();
+  popupFullName.value = userInfo.name;
+  popupVocation.value = userInfo.about;
   editPopupInstance.open();
 }
 
